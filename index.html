@@ -1,0 +1,4276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Grace Community Church</title>
+  <!-- Build: Android-safe admin top slideshow edition -->
+
+  <style>
+    :root {
+      --primary-50: #eef6ff;
+      --primary-100: #d9ecff;
+      --primary-600: #1768cc;
+      --primary-700: #1554a6;
+      --primary-800: #174887;
+      --gold: #f6c85f;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --shadow: 0 20px 60px rgba(15, 23, 42, 0.12);
+      --radius: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+    }
+
+    button, input, textarea {
+      font: inherit;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(226, 232, 240, 0.7);
+      transition: box-shadow 0.25s ease, background 0.25s ease;
+    }
+
+    .header.scrolled {
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 8px 28px rgba(15, 23, 42, 0.1);
+    }
+
+    .header-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: var(--primary-700);
+      color: white;
+      box-shadow: 0 12px 26px rgba(21, 84, 166, 0.24);
+    }
+
+    .brand-small {
+      margin: 0;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      font-weight: 900;
+      color: var(--primary-700);
+      line-height: 1.1;
+    }
+
+    .brand-name {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .nav a {
+      padding: 10px 13px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #334155;
+    }
+
+    .nav a:hover,
+    .nav a.active {
+      background: var(--primary-50);
+      color: var(--primary-700);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 20px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, opacity 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-primary {
+      background: var(--primary-700);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-800);
+    }
+
+    .btn-dark {
+      background: var(--ink);
+      color: white;
+    }
+
+    .btn-light {
+      background: #f1f5f9;
+      color: var(--ink);
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    .mobile-btn {
+      display: none;
+      width: 46px;
+      height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: white;
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 86px;
+      left: 16px;
+      right: 16px;
+      z-index: 1001;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 12px;
+    }
+
+    .mobile-menu.open {
+      display: grid;
+      gap: 4px;
+    }
+
+    .mobile-menu a {
+      padding: 14px 16px;
+      border-radius: 18px;
+      font-weight: 800;
+      color: #334155;
+    }
+
+    .mobile-menu a.active,
+    .mobile-menu a:hover {
+      background: var(--primary-50);
+      color: var(--primary-700);
+    }
+
+    .hero {
+      padding-top: 116px;
+      color: white;
+      overflow: hidden;
+      background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(21, 84, 166, 0.74)),
+        radial-gradient(circle at 15% 20%, rgba(246, 200, 95, 0.26), transparent 28%),
+        radial-gradient(circle at 85% 20%, rgba(80, 164, 255, 0.26), transparent 30%),
+        linear-gradient(135deg, #0f172a, #1554a6);
+    }
+
+    .hero-grid {
+      min-height: 640px;
+      display: grid;
+      align-items: center;
+      gap: 42px;
+      grid-template-columns: 1.05fr 0.95fr;
+      padding: 64px 0 90px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      margin: 0 0 18px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #dbeafe;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(40px, 7vw, 78px);
+      line-height: 0.98;
+      letter-spacing: -0.04em;
+      font-weight: 950;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: 24px 0 0;
+      color: #dbeafe;
+      line-height: 1.75;
+      font-size: 18px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 34px;
+    }
+
+    .hero-card {
+      padding: 16px;
+      border-radius: 36px;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(16px);
+      box-shadow: var(--shadow);
+    }
+
+    .art {
+      min-height: 420px;
+      display: grid;
+      place-items: center;
+      border-radius: 28px;
+      padding: 36px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 25% 20%, rgba(246, 200, 95, 0.36), transparent 30%),
+        radial-gradient(circle at 72% 30%, rgba(40, 133, 240, 0.28), transparent 35%),
+        linear-gradient(135deg, #e0f2fe, #f8fafc);
+    }
+
+    .art-inner {
+      width: 100%;
+      padding: 28px;
+      border-radius: 28px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 14px 34px rgba(15, 23, 42, 0.12);
+    }
+
+    .art-inner h2 {
+      margin: 10px 0 0;
+      font-size: 32px;
+      line-height: 1.05;
+    }
+
+    .art-inner p {
+      margin: 14px 0 0;
+      color: #475569;
+    }
+
+    .quick-bar {
+      position: relative;
+      z-index: 2;
+      margin-top: -46px;
+    }
+
+    .quick-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(3, 1fr);
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: white;
+      box-shadow: var(--shadow);
+    }
+
+    .quick-item {
+      padding: 18px;
+      border-radius: 22px;
+      background: #f8fafc;
+    }
+
+    .quick-item span,
+    .muted-label {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .quick-item strong {
+      display: block;
+      margin-top: 7px;
+      color: var(--ink);
+      font-size: 15px;
+    }
+
+    .section {
+      padding: 82px 0;
+    }
+
+    .section.white {
+      background: white;
+    }
+
+    .section-head {
+      margin-bottom: 34px;
+    }
+
+    .section-head.center {
+      text-align: center;
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: clamp(30px, 4.5vw, 46px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      font-weight: 950;
+    }
+
+    .section-head p {
+      margin: 16px 0 0;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    .page-hero {
+      padding: 150px 0 80px;
+      color: white;
+      background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(21, 84, 166, 0.76)),
+        radial-gradient(circle at 15% 20%, rgba(246, 200, 95, 0.24), transparent 32%),
+        linear-gradient(135deg, #0f172a, #1554a6);
+    }
+
+    .page-hero h1 {
+      max-width: 900px;
+      margin: 0;
+      font-size: clamp(38px, 6vw, 68px);
+      line-height: 1.02;
+      letter-spacing: -0.04em;
+    }
+
+    .page-hero p {
+      max-width: 760px;
+      margin: 22px 0 0;
+      color: #dbeafe;
+      line-height: 1.75;
+      font-size: 18px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 24px;
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: white;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .card-body {
+      padding: 24px;
+    }
+
+    .media {
+      height: 220px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--primary-700);
+      background:
+        radial-gradient(circle at 25% 20%, rgba(246, 200, 95, 0.32), transparent 30%),
+        radial-gradient(circle at 70% 30%, rgba(40, 133, 240, 0.25), transparent 35%),
+        linear-gradient(135deg, #e0f2fe, #f8fafc);
+    }
+
+    .media img {
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .media strong {
+      font-size: 14px;
+    }
+
+    .card h3 {
+      margin: 10px 0 0;
+      font-size: 22px;
+      line-height: 1.12;
+    }
+
+    .card p {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .date {
+      display: block;
+      color: var(--primary-700);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .pill {
+      display: inline-flex;
+      margin-top: 12px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: var(--primary-50);
+      color: var(--primary-700);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .two-col-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background: white;
+      box-shadow: var(--shadow);
+    }
+
+    .two-col-card .media {
+      min-height: 330px;
+      height: auto;
+    }
+
+    .two-col-card .content {
+      padding: 42px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .feature-box {
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: white;
+    }
+
+    .icon-circle {
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 20px;
+      border-radius: 18px;
+      background: var(--primary-50);
+      color: var(--primary-700);
+    }
+
+    .newsletter {
+      background: var(--primary-700);
+      color: white;
+      padding: 54px 0;
+    }
+
+    .newsletter-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .newsletter h2 {
+      margin: 8px 0 0;
+      font-size: 34px;
+      line-height: 1.1;
+    }
+
+    .newsletter p {
+      color: #dbeafe;
+    }
+
+    .inline-form {
+      display: flex;
+      gap: 10px;
+      padding: 12px;
+      border-radius: 26px;
+      background: white;
+      box-shadow: var(--shadow);
+    }
+
+    .input,
+    .textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 13px 15px;
+      outline: none;
+      background: white;
+    }
+
+    .input:focus,
+    .textarea:focus {
+      border-color: var(--primary-600);
+      box-shadow: 0 0 0 4px rgba(23, 104, 204, 0.12);
+    }
+
+    .textarea {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .form-card {
+      padding: 30px;
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background: white;
+      box-shadow: var(--shadow);
+    }
+
+    .label {
+      display: block;
+      margin-bottom: 7px;
+      color: #334155;
+      font-size: 14px;
+      font-weight: 850;
+    }
+
+    .message {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .message.success {
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .message.error {
+      background: #fef2f2;
+      color: #b91c1c;
+    }
+
+    .notice {
+      margin-top: 98px;
+      padding: 18px;
+      border: 1px solid #fed7aa;
+      border-radius: 22px;
+      background: #fff7ed;
+      color: #9a3412;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .notice code {
+      padding: 2px 6px;
+      border-radius: 7px;
+      background: white;
+      color: #7c2d12;
+    }
+
+    .state {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: white;
+      color: var(--muted);
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .detail {
+      padding: 122px 0 80px;
+    }
+
+    .detail-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      background: white;
+      box-shadow: var(--shadow);
+    }
+
+    .detail-card .media {
+      height: 390px;
+    }
+
+    .detail-body {
+      padding: 36px;
+    }
+
+    .detail-body h1 {
+      margin: 12px 0 0;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+    }
+
+    .detail-body p {
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .video-wrap {
+      overflow: hidden;
+      margin-top: 26px;
+      border-radius: 24px;
+      background: #020617;
+      aspect-ratio: 16 / 9;
+    }
+
+    .video-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .map {
+      width: 100%;
+      height: 340px;
+      border: 0;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .dark-panel {
+      padding: 30px;
+      border-radius: 30px;
+      background: #020617;
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .dark-panel p {
+      color: #cbd5e1;
+      line-height: 1.75;
+    }
+
+    .accordion {
+      display: grid;
+      gap: 12px;
+    }
+
+    .accordion-item {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .accordion-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      width: 100%;
+      border: 0;
+      background: white;
+      padding: 18px;
+      text-align: left;
+      font-weight: 950;
+      cursor: pointer;
+    }
+
+    .accordion-body {
+      display: none;
+      padding: 0 18px 18px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .accordion-item.open .accordion-body {
+      display: block;
+    }
+
+    .footer {
+      background: #020617;
+      color: #cbd5e1;
+      padding-top: 52px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 36px;
+      padding-bottom: 46px;
+    }
+
+    .footer h3,
+    .footer strong {
+      color: white;
+    }
+
+    .footer p,
+    .footer a {
+      color: #94a3b8;
+      line-height: 1.7;
+    }
+
+    .footer a:hover {
+      color: white;
+    }
+
+    .socials {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .socials a {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .footer-bottom {
+      padding: 18px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #64748b;
+      text-align: center;
+      font-size: 13px;
+    }
+
+
+    .admin-shell {
+      padding: 118px 0 80px;
+    }
+
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .admin-sidebar {
+      position: sticky;
+      top: 96px;
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: white;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+    }
+
+    .admin-sidebar a,
+    .admin-sidebar button {
+      width: 100%;
+      border: 0;
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: transparent;
+      color: #334155;
+      text-align: left;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .admin-sidebar a:hover,
+    .admin-sidebar a.active,
+    .admin-sidebar button:hover {
+      background: var(--primary-50);
+      color: var(--primary-700);
+    }
+
+    .admin-main {
+      min-width: 0;
+    }
+
+    .admin-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 26px;
+      background: white;
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+    }
+
+    .admin-topbar h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+
+    .admin-topbar p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .admin-card {
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      background: white;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .admin-stat {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: white;
+    }
+
+    .admin-stat strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .admin-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+    }
+
+    .admin-table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    .admin-table th,
+    .admin-table td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    .admin-table th {
+      background: #f8fafc;
+      color: #334155;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .admin-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-small {
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .admin-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .admin-form-grid .full {
+      grid-column: 1 / -1;
+    }
+
+    .admin-form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .admin-muted {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .admin-login {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 110px 16px 70px;
+      background:
+        linear-gradient(135deg, rgba(15, 23, 42, 0.88), rgba(21, 84, 166, 0.76)),
+        radial-gradient(circle at 20% 15%, rgba(246, 200, 95, 0.28), transparent 30%),
+        linear-gradient(135deg, #0f172a, #1554a6);
+    }
+
+    .admin-login .form-card {
+      width: min(480px, 100%);
+    }
+
+    .admin-upload-row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .admin-upload-row input[type="file"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px dashed var(--line);
+      border-radius: 16px;
+      background: #f8fafc;
+    }
+
+    .admin-preview-img {
+      width: 72px;
+      height: 52px;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+    }
+
+
+
+    .brand-icon.logo-present {
+      padding: 4px;
+      background: white;
+      overflow: hidden;
+    }
+
+    .brand-logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 14px;
+      background: white;
+    }
+
+    .header {
+      background: var(--header-bg, rgba(255, 255, 255, 0.72));
+      color: var(--header-text, #0f172a);
+      border-bottom-color: var(--header-border, rgba(226, 232, 240, 0.7));
+    }
+
+    .header.scrolled {
+      background: var(--header-scrolled-bg, rgba(255, 255, 255, 0.96));
+    }
+
+    .header .brand-name,
+    .header .nav a {
+      color: var(--header-text, #334155);
+    }
+
+    .header .brand-small {
+      color: var(--header-accent, var(--primary-700));
+    }
+
+    .header .brand-icon:not(.logo-present) {
+      background: var(--header-accent, var(--primary-700));
+    }
+
+    .header .nav a:hover,
+    .header .nav a.active,
+    .mobile-menu a:hover,
+    .mobile-menu a.active {
+      background: var(--header-active-bg, var(--primary-50));
+      color: var(--header-active-text, var(--primary-700));
+    }
+
+    .footer {
+      background: var(--footer-bg, #020617);
+      color: var(--footer-text, #cbd5e1);
+    }
+
+    .footer p,
+    .footer a {
+      color: var(--footer-muted, #94a3b8);
+    }
+
+    .footer h3,
+    .footer strong,
+    .footer .brand-name {
+      color: var(--footer-heading, #ffffff);
+    }
+
+    .footer .brand-small {
+      color: var(--footer-accent, #bfdbfe);
+    }
+
+    .footer .brand-icon:not(.logo-present) {
+      background: var(--footer-accent-bg, var(--primary-600));
+    }
+
+    .theme-swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .theme-swatch {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #f8fafc;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .theme-swatch input {
+      margin: 0;
+    }
+
+    .theme-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      border: 2px solid rgba(255,255,255,0.9);
+      box-shadow: 0 0 0 1px rgba(15,23,42,0.16);
+      flex: 0 0 auto;
+    }
+
+    .logo-preview-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #f8fafc;
+    }
+
+    .logo-preview-box img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 18px;
+      background: white;
+      border: 1px solid var(--line);
+    }
+
+    .logo-preview-box .empty-logo-preview {
+      width: 70px;
+      height: 70px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: var(--primary-700);
+      color: white;
+      font-weight: 900;
+    }
+
+    @media (max-width: 920px) {
+      .admin-layout,
+      .admin-stats,
+      .admin-form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-sidebar {
+        position: static;
+      }
+
+      .theme-swatch-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .admin-topbar {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .nav,
+      .desktop-cta {
+        display: none;
+      }
+
+      .mobile-btn {
+        display: inline-grid;
+        place-items: center;
+      }
+
+      .hero-grid,
+      .quick-grid,
+      .newsletter-grid,
+      .two-col-card,
+      .grid-2,
+      .grid-3,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-grid {
+        min-height: auto;
+        padding: 48px 0 86px;
+      }
+
+      .hero-card {
+        display: none;
+      }
+
+      .newsletter-grid {
+        gap: 22px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        width: min(100% - 24px, 1180px);
+      }
+
+      .header-inner {
+        min-height: 70px;
+      }
+
+      .brand-name {
+        font-size: 13px;
+      }
+
+      .hero {
+        padding-top: 98px;
+      }
+
+      .page-hero {
+        padding: 122px 0 62px;
+      }
+
+      .section {
+        padding: 62px 0;
+      }
+
+      .inline-form {
+        display: grid;
+      }
+
+      .detail-card .media {
+        height: 260px;
+      }
+
+      .detail-body {
+        padding: 24px;
+      }
+    }
+
+    /* Page slideshow editor and public slideshow */
+    .slide-stage {
+      position: relative;
+      overflow: hidden;
+      min-height: 360px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 25% 20%, rgba(246, 200, 95, 0.34), transparent 30%),
+        radial-gradient(circle at 70% 30%, rgba(40, 133, 240, 0.25), transparent 35%),
+        linear-gradient(135deg, #e0f2fe, #f8fafc);
+      box-shadow: var(--shadow);
+    }
+
+    .slide-stage-home {
+      min-height: 430px;
+      box-shadow: none;
+    }
+
+    .slide-item {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease;
+    }
+
+    .slide-item.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .slide-item img,
+    .slide-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .slide-overlay {
+      position: absolute;
+      inset: auto 0 0 0;
+      padding: 28px;
+      color: white;
+      background: linear-gradient(to top, rgba(2, 6, 23, 0.84), rgba(2, 6, 23, 0));
+    }
+
+    .slide-overlay h2,
+    .slide-overlay h3 {
+      margin: 0;
+      color: white;
+      font-size: clamp(25px, 4vw, 42px);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .slide-overlay p {
+      max-width: 720px;
+      margin: 10px 0 0;
+      color: rgba(255, 255, 255, 0.88);
+      line-height: 1.65;
+    }
+
+    .slide-dots {
+      position: absolute;
+      left: 24px;
+      bottom: 18px;
+      z-index: 3;
+      display: flex;
+      gap: 8px;
+    }
+
+    .slide-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      border: 0;
+      padding: 0;
+      background: rgba(255, 255, 255, 0.52);
+      cursor: pointer;
+    }
+
+    .slide-dot.active {
+      width: 24px;
+      background: white;
+    }
+
+    .page-slide-section {
+      padding-top: 38px;
+      padding-bottom: 38px;
+    }
+
+    .page-slide-section.hidden {
+      display: none;
+    }
+
+
+    .giving-stewardship-panel {
+      position: sticky;
+      top: 104px;
+      overflow: hidden;
+    }
+
+    .giving-verse-box {
+      margin-top: 24px;
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 24px;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    .giving-verse-box .verse-label {
+      display: block;
+      margin-bottom: 10px;
+      color: #fef3c7;
+      font-size: 12px;
+      font-weight: 950;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .giving-verse-box blockquote {
+      margin: 0;
+      color: #ffffff;
+      font-size: clamp(18px, 2.5vw, 26px);
+      line-height: 1.45;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+    }
+
+    .giving-verse-box cite {
+      display: block;
+      margin-top: 12px;
+      color: #bfdbfe;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 900;
+    }
+
+    .giving-stewardship-slides {
+      margin-top: 24px;
+    }
+
+    .giving-stewardship-slides:empty {
+      display: none;
+    }
+
+    .giving-stewardship-slides .slide-stage {
+      min-height: 280px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow: none;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .giving-stewardship-slides .slide-overlay {
+      padding: 22px;
+    }
+
+    @media (max-width: 920px) {
+      .giving-stewardship-panel {
+        position: static;
+      }
+    }
+
+
+
+    /* Full-width top hero slideshow for Sermons and Events pages */
+    .top-media-hero {
+      position: relative;
+      overflow: hidden;
+      min-height: clamp(560px, 76vh, 760px);
+      padding-top: 76px;
+      background: #020617;
+      color: white;
+    }
+
+    .top-media-hero .top-hero-stage {
+      position: absolute;
+      inset: 0;
+      min-height: 100%;
+      border-radius: 0;
+      box-shadow: none;
+      background: #020617;
+    }
+
+    .top-media-hero .slide-item img,
+    .top-media-hero .slide-item video {
+      filter: saturate(1.08) contrast(1.05);
+      transform: scale(1.01);
+    }
+
+    .top-media-hero .slide-item video {
+      object-fit: cover;
+    }
+
+    .top-hero-shade {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, rgba(2, 6, 23, 0.82), rgba(2, 6, 23, 0.48), rgba(2, 6, 23, 0.18)),
+        linear-gradient(to top, rgba(2, 6, 23, 0.82), rgba(2, 6, 23, 0.08) 56%, rgba(2, 6, 23, 0.42));
+    }
+
+    .top-hero-content {
+      position: relative;
+      z-index: 4;
+      width: min(1180px, calc(100% - 32px));
+      min-height: calc(clamp(560px, 76vh, 760px) - 76px);
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      padding: 72px 0 84px;
+    }
+
+    .top-hero-glass {
+      max-width: 840px;
+      padding: clamp(24px, 4vw, 42px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 34px;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.55), rgba(15, 23, 42, 0.24));
+      box-shadow: 0 24px 70px rgba(2, 6, 23, 0.28);
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+    }
+
+    .top-hero-glass h1 {
+      margin: 0;
+      max-width: 900px;
+      color: white;
+      font-size: clamp(42px, 7vw, 86px);
+      line-height: 0.98;
+      letter-spacing: -0.055em;
+      font-weight: 950;
+      text-shadow: 0 14px 40px rgba(0, 0, 0, 0.32);
+    }
+
+    .top-hero-glass p {
+      max-width: 720px;
+      margin: 20px 0 0;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: clamp(17px, 2.1vw, 22px);
+      line-height: 1.68;
+      text-shadow: 0 10px 34px rgba(0, 0, 0, 0.34);
+    }
+
+    .top-hero-eyebrow {
+      margin-bottom: 18px;
+      background: rgba(255, 255, 255, 0.15) !important;
+      border: 1px solid rgba(255, 255, 255, 0.24) !important;
+      color: #ffffff !important;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .top-media-hero .slide-dots {
+      left: auto;
+      right: 32px;
+      bottom: 32px;
+      z-index: 5;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.34);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .top-media-hero .slide-dot {
+      width: 10px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.58);
+    }
+
+    .top-media-hero .slide-dot.active {
+      width: 30px;
+      background: #ffffff;
+    }
+
+    @media (max-width: 720px) {
+      .top-media-hero {
+        min-height: 620px;
+        padding-top: 70px;
+      }
+
+      .top-hero-content {
+        width: min(100% - 24px, 1180px);
+        min-height: 550px;
+        padding: 52px 0 74px;
+      }
+
+      .top-hero-glass {
+        border-radius: 26px;
+      }
+
+      .top-media-hero .slide-dots {
+        right: 18px;
+        bottom: 20px;
+      }
+    }
+
+    .slide-admin-preview {
+      height: 170px;
+      overflow: hidden;
+      border-radius: 20px;
+      background: #e2e8f0;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+
+    .slide-admin-preview img,
+    .slide-admin-preview video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slide-admin-card {
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: #fff;
+    }
+
+    .slide-admin-meta {
+      display: grid;
+      gap: 12px;
+    }
+
+    .slide-admin-group {
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .slide-admin-group:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+
+    @media (max-width: 920px) {
+      .slide-stage,
+      .slide-stage-home {
+        min-height: 300px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .slide-stage,
+      .slide-stage-home {
+        min-height: 245px;
+      }
+
+      .slide-overlay {
+        padding: 20px;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <header class="header" id="siteHeader">
+    <div class="container header-inner">
+      <a class="brand" href="#/">
+        <span class="brand-icon" aria-hidden="true">
+          <svg width="27" height="27" viewBox="0 0 64 64" fill="none">
+            <path d="M32 8V56" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+            <path d="M18 22H46" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+            <path d="M12 56H52" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span>
+          <span class="brand-small">Grace</span>
+          <span class="brand-name">Community Church</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="mainNav">
+        <a href="#/">Home</a>
+        <a href="#/about">About</a>
+        <a href="#/sermons">Sermons</a>
+        <a href="#/events">Events</a>
+        <a href="#/ministries">Ministries</a>
+        <a href="#/give">Give</a>
+        <a href="#/contact">Contact</a>
+        <a href="#/admin">Admin</a>
+      </nav>
+
+      <a class="btn btn-primary desktop-cta" href="#/events">Plan a Visit</a>
+
+      <button class="mobile-btn" id="mobileBtn" aria-label="Toggle menu">☰</button>
+    </div>
+
+    <nav class="mobile-menu" id="mobileMenu">
+      <a href="#/">Home</a>
+      <a href="#/about">About</a>
+      <a href="#/sermons">Sermons</a>
+      <a href="#/events">Events</a>
+      <a href="#/ministries">Ministries</a>
+      <a href="#/give">Give</a>
+      <a href="#/contact">Contact</a>
+      <a href="#/admin">Admin</a>
+      <a class="btn btn-primary" href="#/events">Plan a Visit</a>
+    </nav>
+  </header>
+
+  <main id="app"></main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand">
+          <span class="brand-icon" aria-hidden="true">
+            <svg width="27" height="27" viewBox="0 0 64 64" fill="none">
+              <path d="M32 8V56" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+              <path d="M18 22H46" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+              <path d="M12 56H52" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <span>
+            <span class="brand-small" >Grace</span>
+            <span class="brand-name" >Community Church</span>
+          </span>
+        </div>
+        <p>
+          Grace Community Church is a Christ-centered community committed to worship, discipleship, mission, and compassionate service.
+        </p>
+        <div class="socials">
+          <a href="#">F</a>
+          <a href="#">X</a>
+          <a href="#">IG</a>
+          <a href="#">YT</a>
+        </div>
+      </div>
+
+      <div>
+        <h3>Quick Links</h3>
+        <p><a href="#/about">About</a></p>
+        <p><a href="#/sermons">Sermons</a></p>
+        <p><a href="#/events">Events</a></p>
+        <p><a href="#/ministries">Ministries</a></p>
+        <p><a href="#/prayer">Prayer Requests</a></p>
+        <p><a href="#/admin">Admin Dashboard</a></p>
+      </div>
+
+      <div>
+        <h3>Visit Us</h3>
+        <p>123 Hope Avenue, Accra, Ghana</p>
+        <p>Sundays at 8:30 AM and 10:30 AM</p>
+        <p>+233 24 000 0000</p>
+        <p>hello@gracechurch.example</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="container">© <span id="year"></span> Grace Community Church. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    /*
+      ANDROID-SAFE ADMIN BUILD
+      ------------------
+      This file uses no CDN libraries. It opens directly from Android file managers and browsers.
+
+      Replace these two values with your Supabase project credentials:
+      - VITE_SUPABASE_URL
+      - VITE_SUPABASE_ANON_KEY
+    */
+    const VITE_SUPABASE_URL = "https://xrwpszzdfcstfesguiaf.supabase.co";
+    const VITE_SUPABASE_ANON_KEY = "sb_publishable_oxppI40YHx1cbpAxo6uVtg_5nJdGzNe";
+
+    let church = {
+      name: "Grace Community Church",
+      tagline: "A place to belong, grow, serve, and encounter Christ.",
+      address: "123 Hope Avenue, Accra, Ghana",
+      phone: "+233 24 000 0000",
+      email: "hello@gracechurch.example",
+      serviceTimes: "Sundays at 8:30 AM and 10:30 AM",
+      streamUrl: "https://example.com/live",
+      givingUrl: "https://example.com/give",
+      giveTitle: "Partner with the mission through faithful generosity.",
+      giveSubtitle: "Your giving supports worship, discipleship, outreach, care ministries, and community transformation.",
+      giveIntroTitle: "Simple giving options",
+      giveIntroText: "Choose the giving method that works best for you.",
+      onlineGivingTitle: "Online Giving",
+      onlineGivingDescription: "Give securely through our external giving platform.",
+      momoEnabled: true,
+      momoTitle: "Mobile Money Giving",
+      momoNetwork: "MTN Mobile Money",
+      momoName: "Grace Community Church",
+      momoNumber: "0000000000",
+      momoReference: "Tithe, Offering, Missions, or Building Fund",
+      momoInstructions: "Send your offering through Mobile Money and include your name and giving purpose as the reference.",
+      bankTransferTitle: "Bank Transfer",
+      bankName: "Example Bank Ghana",
+      bankAccountName: "Grace Community Church",
+      bankAccountNumber: "0000000000",
+      bankReference: "Tithe, Offering, Missions, or Building Fund",
+      inPersonTitle: "In-Person Giving",
+      inPersonText: "You may also give during any worship service or visit the church office during office hours.",
+      stewardshipTitle: "Thank you for supporting the work of the ministry.",
+      stewardshipText: "We handle giving with accountability, transparency, and prayerful stewardship. Your generosity helps us serve families, equip leaders, and reach our community.",
+      stewardshipVersesEnabled: true,
+      logoUrl: "",
+      headerTheme: "blue",
+      footerTheme: "midnight"
+    };
+
+    let siteSettingsLoaded = false;
+
+
+    const THEME_OPTIONS = {
+      blue: { label: "Blue", color: "#1554a6", headerBg: "rgba(255,255,255,0.94)", headerScrolledBg: "rgba(255,255,255,0.98)", headerText: "#0f172a", headerAccent: "#1554a6", activeBg: "#eef6ff", activeText: "#1554a6" },
+      royal: { label: "Royal", color: "#1d4ed8", headerBg: "rgba(239,246,255,0.96)", headerScrolledBg: "rgba(255,255,255,0.99)", headerText: "#172554", headerAccent: "#1d4ed8", activeBg: "#dbeafe", activeText: "#1d4ed8" },
+      navy: { label: "Navy", color: "#0f172a", headerBg: "rgba(15,23,42,0.96)", headerScrolledBg: "rgba(15,23,42,0.98)", headerText: "#ffffff", headerAccent: "#60a5fa", activeBg: "rgba(96,165,250,0.18)", activeText: "#bfdbfe", border: "rgba(148,163,184,0.25)" },
+      emerald: { label: "Emerald", color: "#047857", headerBg: "rgba(236,253,245,0.96)", headerScrolledBg: "rgba(255,255,255,0.99)", headerText: "#064e3b", headerAccent: "#047857", activeBg: "#d1fae5", activeText: "#047857" },
+      teal: { label: "Teal", color: "#0f766e", headerBg: "rgba(240,253,250,0.96)", headerScrolledBg: "rgba(255,255,255,0.99)", headerText: "#134e4a", headerAccent: "#0f766e", activeBg: "#ccfbf1", activeText: "#0f766e" },
+      purple: { label: "Purple", color: "#7e22ce", headerBg: "rgba(250,245,255,0.96)", headerScrolledBg: "rgba(255,255,255,0.99)", headerText: "#3b0764", headerAccent: "#7e22ce", activeBg: "#f3e8ff", activeText: "#7e22ce" },
+      rose: { label: "Rose", color: "#be123c", headerBg: "rgba(255,241,242,0.96)", headerScrolledBg: "rgba(255,255,255,0.99)", headerText: "#4c0519", headerAccent: "#be123c", activeBg: "#ffe4e6", activeText: "#be123c" },
+      amber: { label: "Amber", color: "#b45309", headerBg: "rgba(255,251,235,0.96)", headerScrolledBg: "rgba(255,255,255,0.99)", headerText: "#451a03", headerAccent: "#b45309", activeBg: "#fef3c7", activeText: "#92400e" },
+      orange: { label: "Orange", color: "#c2410c", headerBg: "rgba(255,247,237,0.96)", headerScrolledBg: "rgba(255,255,255,0.99)", headerText: "#431407", headerAccent: "#c2410c", activeBg: "#ffedd5", activeText: "#c2410c" },
+      maroon: { label: "Maroon", color: "#7f1d1d", headerBg: "rgba(254,242,242,0.96)", headerScrolledBg: "rgba(255,255,255,0.99)", headerText: "#450a0a", headerAccent: "#7f1d1d", activeBg: "#fee2e2", activeText: "#991b1b" },
+      slate: { label: "Slate", color: "#334155", headerBg: "rgba(248,250,252,0.96)", headerScrolledBg: "rgba(255,255,255,0.99)", headerText: "#0f172a", headerAccent: "#334155", activeBg: "#e2e8f0", activeText: "#0f172a" },
+      black: { label: "Black", color: "#020617", headerBg: "rgba(2,6,23,0.96)", headerScrolledBg: "rgba(2,6,23,0.98)", headerText: "#ffffff", headerAccent: "#f8fafc", activeBg: "rgba(255,255,255,0.14)", activeText: "#ffffff", border: "rgba(255,255,255,0.14)" }
+    };
+
+    const FOOTER_THEME_OPTIONS = {
+      midnight: { label: "Midnight", color: "#020617", bg: "#020617", text: "#cbd5e1", muted: "#94a3b8", heading: "#ffffff", accent: "#bfdbfe", accentBg: "#1554a6" },
+      navy: { label: "Navy", color: "#0f172a", bg: "#0f172a", text: "#e2e8f0", muted: "#cbd5e1", heading: "#ffffff", accent: "#93c5fd", accentBg: "#1d4ed8" },
+      royal: { label: "Royal", color: "#1e3a8a", bg: "#1e3a8a", text: "#dbeafe", muted: "#bfdbfe", heading: "#ffffff", accent: "#fde68a", accentBg: "#2563eb" },
+      emerald: { label: "Emerald", color: "#064e3b", bg: "#064e3b", text: "#d1fae5", muted: "#a7f3d0", heading: "#ffffff", accent: "#fef3c7", accentBg: "#047857" },
+      teal: { label: "Teal", color: "#134e4a", bg: "#134e4a", text: "#ccfbf1", muted: "#99f6e4", heading: "#ffffff", accent: "#fef3c7", accentBg: "#0f766e" },
+      purple: { label: "Purple", color: "#581c87", bg: "#581c87", text: "#f3e8ff", muted: "#e9d5ff", heading: "#ffffff", accent: "#fde68a", accentBg: "#7e22ce" },
+      rose: { label: "Rose", color: "#881337", bg: "#881337", text: "#ffe4e6", muted: "#fecdd3", heading: "#ffffff", accent: "#fef3c7", accentBg: "#be123c" },
+      amber: { label: "Amber", color: "#78350f", bg: "#78350f", text: "#fef3c7", muted: "#fde68a", heading: "#ffffff", accent: "#dbeafe", accentBg: "#b45309" },
+      maroon: { label: "Maroon", color: "#450a0a", bg: "#450a0a", text: "#fee2e2", muted: "#fecaca", heading: "#ffffff", accent: "#fef3c7", accentBg: "#7f1d1d" },
+      charcoal: { label: "Charcoal", color: "#111827", bg: "#111827", text: "#d1d5db", muted: "#9ca3af", heading: "#ffffff", accent: "#facc15", accentBg: "#374151" },
+      light: { label: "Light", color: "#f8fafc", bg: "#f8fafc", text: "#334155", muted: "#475569", heading: "#0f172a", accent: "#1554a6", accentBg: "#1554a6" },
+      black: { label: "Black", color: "#000000", bg: "#000000", text: "#e5e7eb", muted: "#9ca3af", heading: "#ffffff", accent: "#ffffff", accentBg: "#111827" }
+    };
+
+    const app = document.getElementById("app");
+    const configured = VITE_SUPABASE_URL.includes("supabase.co")
+      && !VITE_SUPABASE_URL.includes("YOUR_PROJECT_REF")
+      && !VITE_SUPABASE_ANON_KEY.includes("YOUR_SUPABASE_ANON_KEY")
+      && VITE_SUPABASE_ANON_KEY.length > 20;
+
+
+    const GIVING_VERSES = [
+      { text: "Give, and it shall be given unto you; good measure, pressed down, and shaken together, and running over.", reference: "Luke 6:38, KJV" },
+      { text: "Every man according as he purposeth in his heart, so let him give; not grudgingly, or of necessity.", reference: "2 Corinthians 9:7, KJV" },
+      { text: "Honour the Lord with thy substance, and with the firstfruits of all thine increase.", reference: "Proverbs 3:9, KJV" },
+      { text: "It is more blessed to give than to receive.", reference: "Acts 20:35, KJV" },
+      { text: "Bring ye all the tithes into the storehouse, that there may be meat in mine house.", reference: "Malachi 3:10, KJV" },
+      { text: "The liberal soul shall be made fat: and he that watereth shall be watered also himself.", reference: "Proverbs 11:25, KJV" },
+      { text: "For where your treasure is, there will your heart be also.", reference: "Matthew 6:21, KJV" },
+      { text: "All things come of thee, and of thine own have we given thee.", reference: "1 Chronicles 29:14, KJV" },
+      { text: "To do good and to communicate forget not: for with such sacrifices God is well pleased.", reference: "Hebrews 13:16, KJV" },
+      { text: "He which soweth bountifully shall reap also bountifully.", reference: "2 Corinthians 9:6, KJV" }
+    ];
+
+    let givingVerseTimer = null;
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function formatDate(value) {
+      if (!value) return "";
+      const d = new Date(String(value).includes("T") ? value : value + "T00:00:00");
+      if (Number.isNaN(d.getTime())) return escapeHtml(value);
+      return new Intl.DateTimeFormat("en", { year: "numeric", month: "short", day: "numeric" }).format(d);
+    }
+
+    function formatDateTime(value) {
+      if (!value) return "";
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return escapeHtml(value);
+      return new Intl.DateTimeFormat("en", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+      }).format(d);
+    }
+
+    function truncate(value, max = 145) {
+      const text = String(value || "");
+      return text.length <= max ? text : text.slice(0, max).trim() + "...";
+    }
+
+    function media(src, label) {
+      if (src) {
+        return `<div class="media"><img src="${escapeHtml(src)}" alt="${escapeHtml(label)}" onerror="this.parentElement.innerHTML='<strong>${escapeHtml(label)}</strong>'"></div>`;
+      }
+      return `<div class="media"><strong>${escapeHtml(label)}</strong></div>`;
+    }
+
+    function setupNotice() {
+      return "";
+    }
+
+    function applyChurchSettings(settings = {}) {
+      if (!settings) return;
+
+      church = {
+        name: settings.church_name || church.name,
+        tagline: settings.tagline || church.tagline,
+        address: settings.address || church.address,
+        phone: settings.phone || church.phone,
+        email: settings.email || church.email,
+        serviceTimes: settings.service_times || church.serviceTimes,
+        streamUrl: settings.stream_url || church.streamUrl,
+        givingUrl: settings.giving_url || church.givingUrl,
+        giveTitle: settings.give_title || church.giveTitle,
+        giveSubtitle: settings.give_subtitle || church.giveSubtitle,
+        giveIntroTitle: settings.give_intro_title || church.giveIntroTitle,
+        giveIntroText: settings.give_intro_text || church.giveIntroText,
+        onlineGivingTitle: settings.online_giving_title || church.onlineGivingTitle,
+        onlineGivingDescription: settings.online_giving_description || church.onlineGivingDescription,
+        momoEnabled: settings.momo_enabled === false ? false : (settings.momo_enabled === true ? true : church.momoEnabled),
+        momoTitle: settings.momo_title || church.momoTitle,
+        momoNetwork: settings.momo_network || church.momoNetwork,
+        momoName: settings.momo_name || church.momoName,
+        momoNumber: settings.momo_number || church.momoNumber,
+        momoReference: settings.momo_reference || church.momoReference,
+        momoInstructions: settings.momo_instructions || church.momoInstructions,
+        bankTransferTitle: settings.bank_transfer_title || church.bankTransferTitle,
+        bankName: settings.bank_name || church.bankName,
+        bankAccountName: settings.bank_account_name || church.bankAccountName,
+        bankAccountNumber: settings.bank_account_number || church.bankAccountNumber,
+        bankReference: settings.bank_reference || church.bankReference,
+        inPersonTitle: settings.in_person_title || church.inPersonTitle,
+        inPersonText: settings.in_person_text || church.inPersonText,
+        stewardshipTitle: settings.stewardship_title || church.stewardshipTitle,
+        stewardshipText: settings.stewardship_text || church.stewardshipText,
+        stewardshipVersesEnabled: settings.stewardship_verses_enabled === false ? false : (settings.stewardship_verses_enabled === true ? true : church.stewardshipVersesEnabled),
+        logoUrl: settings.logo_url || church.logoUrl || "",
+        headerTheme: settings.header_theme || church.headerTheme || "blue",
+        footerTheme: settings.footer_theme || church.footerTheme || "midnight"
+      };
+
+      applyThemeSettings();
+      applyChurchBrandToStaticLayout();
+    }
+
+    function brandParts(name) {
+      const parts = String(name || church.name).trim().split(/\s+/).filter(Boolean);
+      if (parts.length <= 1) return { small: "Church", rest: parts[0] || church.name };
+      return { small: parts[0], rest: parts.slice(1).join(" ") };
+    }
+
+    function defaultBrandIconSvg() {
+      return `
+        <svg width="27" height="27" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+          <path d="M32 8V56" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+          <path d="M18 22H46" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+          <path d="M12 56H52" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+        </svg>
+      `;
+    }
+
+    function applyThemeSettings() {
+      const root = document.documentElement;
+      const header = THEME_OPTIONS[church.headerTheme] || THEME_OPTIONS.blue;
+      const footer = FOOTER_THEME_OPTIONS[church.footerTheme] || FOOTER_THEME_OPTIONS.midnight;
+
+      root.style.setProperty("--header-bg", header.headerBg);
+      root.style.setProperty("--header-scrolled-bg", header.headerScrolledBg);
+      root.style.setProperty("--header-text", header.headerText);
+      root.style.setProperty("--header-accent", header.headerAccent);
+      root.style.setProperty("--header-active-bg", header.activeBg);
+      root.style.setProperty("--header-active-text", header.activeText);
+      root.style.setProperty("--header-border", header.border || "rgba(226, 232, 240, 0.7)");
+
+      root.style.setProperty("--footer-bg", footer.bg);
+      root.style.setProperty("--footer-text", footer.text);
+      root.style.setProperty("--footer-muted", footer.muted);
+      root.style.setProperty("--footer-heading", footer.heading);
+      root.style.setProperty("--footer-accent", footer.accent);
+      root.style.setProperty("--footer-accent-bg", footer.accentBg);
+    }
+
+    function applyChurchBrandToStaticLayout() {
+      const parts = brandParts(church.name);
+      document.title = church.name;
+      document.querySelectorAll(".brand-small").forEach((el) => { el.textContent = parts.small; });
+      document.querySelectorAll(".brand-name").forEach((el) => { el.textContent = parts.rest; });
+
+      document.querySelectorAll(".brand-icon").forEach((el) => {
+        if (church.logoUrl) {
+          el.classList.add("logo-present");
+          el.innerHTML = `<img class="brand-logo-img" src="${escapeHtml(church.logoUrl)}" alt="${escapeHtml(church.name)} logo" onerror="this.parentElement.classList.remove('logo-present');this.parentElement.innerHTML=defaultBrandIconSvg();">`;
+        } else {
+          el.classList.remove("logo-present");
+          el.innerHTML = defaultBrandIconSvg();
+        }
+      });
+
+      const footerDescription = document.querySelector(".footer-grid > div:first-child > p");
+      if (footerDescription) {
+        footerDescription.textContent = `${church.name} is a Christ-centered community committed to worship, discipleship, mission, and compassionate service.`;
+      }
+
+      const visitItems = document.querySelectorAll(".footer-grid > div:nth-child(3) p");
+      if (visitItems[0]) visitItems[0].textContent = church.address;
+      if (visitItems[1]) visitItems[1].textContent = church.serviceTimes;
+      if (visitItems[2]) visitItems[2].textContent = church.phone;
+      if (visitItems[3]) visitItems[3].textContent = church.email;
+
+      const footerBottom = document.querySelector(".footer-bottom .container");
+      if (footerBottom) footerBottom.innerHTML = `© <span id="year">${new Date().getFullYear()}</span> ${escapeHtml(church.name)}. All rights reserved.`;
+    }
+
+    async function loadSiteSettingsOnce(force = false) {
+      if (!configured || (siteSettingsLoaded && !force)) return;
+      try {
+        const rows = await supabaseRequest("site_settings", "?select=*&id=eq.main&limit=1");
+        if (rows && rows[0]) applyChurchSettings(rows[0]);
+        siteSettingsLoaded = true;
+      } catch (error) {
+        siteSettingsLoaded = true;
+      }
+    }
+
+    function getAdminSession() {
+      try {
+        return JSON.parse(localStorage.getItem("gcc_admin_session") || "null");
+      } catch {
+        return null;
+      }
+    }
+
+    function setAdminSession(session) {
+      localStorage.setItem("gcc_admin_session", JSON.stringify(session));
+    }
+
+    function clearAdminSession() {
+      localStorage.removeItem("gcc_admin_session");
+    }
+
+    function requireAdminSession() {
+      const session = getAdminSession();
+      if (!session || !session.access_token) {
+        throw new Error("Please log in as an admin first.");
+      }
+      return session;
+    }
+
+    async function supabaseRequest(table, query = "", options = {}) {
+      if (!configured) {
+        throw new Error("Service is not available yet.");
+      }
+
+      const url = `${VITE_SUPABASE_URL.replace(/\/$/, "")}/rest/v1/${table}${query}`;
+      const token = options.auth ? requireAdminSession().access_token : VITE_SUPABASE_ANON_KEY;
+      const headers = {
+        "apikey": VITE_SUPABASE_ANON_KEY,
+        "Authorization": `Bearer ${token}`,
+        "Content-Type": "application/json"
+      };
+
+      if (options.prefer) headers["Prefer"] = options.prefer;
+
+      const response = await fetch(url, {
+        method: options.method || "GET",
+        headers,
+        body: options.body ? JSON.stringify(options.body) : undefined
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        if (response.status === 401 && options.auth) clearAdminSession();
+        throw new Error(text || `Request failed with status ${response.status}`);
+      }
+
+      if (response.status === 204) return null;
+      if (options.method === "POST" && options.prefer === "return=minimal") return null;
+      if (options.method === "PATCH" && options.prefer === "return=minimal") return null;
+      if (options.method === "DELETE") return null;
+      return response.json();
+    }
+
+    async function adminLogin(email, password) {
+      if (!configured) throw new Error("Service is not available yet.");
+
+      const response = await fetch(`${VITE_SUPABASE_URL.replace(/\/$/, "")}/auth/v1/token?grant_type=password`, {
+        method: "POST",
+        headers: {
+          "apikey": VITE_SUPABASE_ANON_KEY,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email, password })
+      });
+
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(payload.error_description || payload.msg || payload.message || "Admin login failed.");
+      }
+
+      const session = {
+        access_token: payload.access_token,
+        refresh_token: payload.refresh_token,
+        expires_at: Date.now() + ((payload.expires_in || 3600) * 1000),
+        user: payload.user || { email }
+      };
+      setAdminSession(session);
+      return session;
+    }
+
+    function storagePublicUrl(bucket, path) {
+      return `${VITE_SUPABASE_URL.replace(/\/$/, "")}/storage/v1/object/public/${bucket}/${path.split("/").map(encodeURIComponent).join("/")}`;
+    }
+
+    function cleanFileName(name) {
+      return String(name || "file").replace(/[^a-zA-Z0-9._-]/g, "_").slice(-90);
+    }
+
+    async function uploadAdminFile(bucket, file) {
+      if (!file) return "";
+      const session = requireAdminSession();
+      const path = `${Date.now()}_${Math.random().toString(16).slice(2)}_${cleanFileName(file.name)}`;
+      const url = `${VITE_SUPABASE_URL.replace(/\/$/, "")}/storage/v1/object/${bucket}/${path}`;
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "apikey": VITE_SUPABASE_ANON_KEY,
+          "Authorization": `Bearer ${session.access_token}`,
+          "Content-Type": file.type || "application/octet-stream",
+          "Cache-Control": "3600",
+          "x-upsert": "true"
+        },
+        body: file
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || `Upload failed with status ${response.status}`);
+      }
+
+      return storagePublicUrl(bucket, path);
+    }
+
+    function pageHero(eyebrow, title, description) {
+      return `
+        <section class="page-hero">
+          <div class="container">
+            <span class="eyebrow">${escapeHtml(eyebrow)}</span>
+            <h1>${escapeHtml(title)}</h1>
+            <p>${escapeHtml(description)}</p>
+          </div>
+        </section>
+      `;
+    }
+
+    function sectionHead(eyebrow, title, description, center = false) {
+      return `
+        <div class="section-head ${center ? "center" : ""}">
+          ${eyebrow ? `<span class="eyebrow" style="background:#eef6ff;color:#1554a6;border:0">${escapeHtml(eyebrow)}</span>` : ""}
+          <h2>${escapeHtml(title)}</h2>
+          ${description ? `<p>${escapeHtml(description)}</p>` : ""}
+        </div>
+      `;
+    }
+
+    function state(message) {
+      return `<div class="state">${escapeHtml(message)}</div>`;
+    }
+
+    function sermonCard(item) {
+      return `
+        <article class="card">
+          <a href="#/sermons/${escapeHtml(item.id)}">${media(item.thumbnail_url, "Sermon thumbnail")}</a>
+          <div class="card-body">
+            <span class="date">${formatDate(item.date)}</span>
+            <h3><a href="#/sermons/${escapeHtml(item.id)}">${escapeHtml(item.title)}</a></h3>
+            <p><strong>${escapeHtml(item.speaker)}</strong></p>
+            ${item.scripture_reference ? `<span class="pill">${escapeHtml(item.scripture_reference)}</span>` : ""}
+            ${item.description ? `<p>${escapeHtml(truncate(item.description))}</p>` : ""}
+          </div>
+        </article>
+      `;
+    }
+
+    function eventCard(item) {
+      return `
+        <article class="card">
+          <a href="#/events/${escapeHtml(item.id)}">${media(item.image_url, "Event image")}</a>
+          <div class="card-body">
+            <span class="date">${formatDateTime(item.start_datetime)}</span>
+            <h3><a href="#/events/${escapeHtml(item.id)}">${escapeHtml(item.title)}</a></h3>
+            ${item.location ? `<p><strong>${escapeHtml(item.location)}</strong></p>` : ""}
+            ${item.description ? `<p>${escapeHtml(truncate(item.description))}</p>` : ""}
+            <a class="btn btn-dark" href="#/events/${escapeHtml(item.id)}">View Details</a>
+          </div>
+        </article>
+      `;
+    }
+
+    function ministryCard(item) {
+      return `
+        <article class="card">
+          ${media(item.image_url, "Ministry image")}
+          <div class="card-body">
+            <h3>${escapeHtml(item.name)}</h3>
+            ${item.meeting_time ? `<span class="pill">${escapeHtml(item.meeting_time)}</span>` : ""}
+            ${item.description ? `<p>${escapeHtml(truncate(item.description))}</p>` : ""}
+            ${(item.contact_person || item.contact_email) ? `
+              <p>
+                ${item.contact_person ? `<strong>Contact:</strong> ${escapeHtml(item.contact_person)}<br>` : ""}
+                ${item.contact_email ? escapeHtml(item.contact_email) : ""}
+              </p>
+            ` : ""}
+          </div>
+        </article>
+      `;
+    }
+
+
+    function publicSlideMarkup(slides, fallbackTitle = "Church slideshow") {
+      if (!slides || !slides.length) return "";
+      return `
+        <div class="slide-stage">
+          ${slides.map((slide, index) => `
+            <div class="slide-item ${index === 0 ? "active" : ""}" data-slide-index="${index}">
+              ${slide.media_type === "video"
+                ? `<video src="${escapeHtml(slide.media_url)}" ${index === 0 ? "autoplay" : ""} muted loop playsinline controls></video>`
+                : `<img src="${escapeHtml(slide.media_url)}" alt="${escapeHtml(slide.title || fallbackTitle)}">`}
+              ${(slide.title || slide.subtitle || slide.link_url) ? `
+                <div class="slide-overlay">
+                  ${slide.title ? `<h2>${escapeHtml(slide.title)}</h2>` : ""}
+                  ${slide.subtitle ? `<p>${escapeHtml(slide.subtitle)}</p>` : ""}
+                  ${slide.link_url ? `<p><a class="btn btn-gold" href="${escapeHtml(slide.link_url)}">Learn More</a></p>` : ""}
+                </div>
+              ` : ""}
+            </div>
+          `).join("")}
+          ${slides.length > 1 ? `<div class="slide-dots">${slides.map((_, index) => `<button class="slide-dot ${index === 0 ? "active" : ""}" data-dot-index="${index}" type="button" aria-label="Show slide ${index + 1}"></button>`).join("")}</div>` : ""}
+        </div>
+      `;
+    }
+
+
+
+    function publicHeroSlideMarkup(slides, fallbackTitle, eyebrow, title, description) {
+      if (!slides || !slides.length) return "";
+      return `
+        <section class="top-media-hero">
+          <div class="slide-stage top-hero-stage">
+            ${slides.map((slide, index) => `
+              <div class="slide-item ${index === 0 ? "active" : ""}" data-slide-index="${index}">
+                ${slide.media_type === "video"
+                  ? `<video src="${escapeHtml(slide.media_url)}" ${index === 0 ? "autoplay" : ""} muted loop playsinline></video>`
+                  : `<img src="${escapeHtml(slide.media_url)}" alt="${escapeHtml(slide.title || fallbackTitle)}">`}
+                <div class="top-hero-shade"></div>
+                <div class="top-hero-content">
+                  <div class="top-hero-glass">
+                    <span class="eyebrow top-hero-eyebrow">${escapeHtml(eyebrow)}</span>
+                    <h1>${escapeHtml(slide.title || title)}</h1>
+                    <p>${escapeHtml(slide.subtitle || description)}</p>
+                    ${slide.link_url ? `<p><a class="btn btn-gold" href="${escapeHtml(slide.link_url)}">Learn More</a></p>` : ""}
+                  </div>
+                </div>
+              </div>
+            `).join("")}
+            ${slides.length > 1 ? `<div class="slide-dots">${slides.map((_, index) => `<button class="slide-dot ${index === 0 ? "active" : ""}" data-dot-index="${index}" type="button" aria-label="Show slide ${index + 1}"></button>`).join("")}</div>` : ""}
+          </div>
+        </section>
+      `;
+    }
+
+    async function loadPublicHeroSlides(pageKey, targetId, mediaType, fallbackTitle, eyebrow, title, description) {
+      const target = document.getElementById(targetId);
+      if (!target || !configured) return;
+
+      try {
+        const rows = await supabaseRequest(
+          "page_slides",
+          `?select=*&page_key=eq.${encodeURIComponent(pageKey)}&media_type=eq.${encodeURIComponent(mediaType)}&is_active=eq.true&order=display_order.asc,created_at.asc`
+        );
+
+        if (!rows || !rows.length) return;
+
+        target.innerHTML = publicHeroSlideMarkup(rows, fallbackTitle, eyebrow, title, description);
+        const stage = target.querySelector(".top-hero-stage");
+        startSlideshow(stage);
+
+        const firstVideo = target.querySelector(".slide-item.active video");
+        if (firstVideo) firstVideo.play().catch(() => {});
+      } catch (error) {
+        return;
+      }
+    }
+
+    function startSlideshow(container) {
+      if (!container) return;
+      const slides = Array.from(container.querySelectorAll(".slide-item"));
+      const dots = Array.from(container.querySelectorAll(".slide-dot"));
+      if (slides.length <= 1) return;
+      let current = 0;
+      const show = (index) => {
+        current = index % slides.length;
+        slides.forEach((slide, i) => {
+          slide.classList.toggle("active", i === current);
+          const video = slide.querySelector("video");
+          if (video) {
+            if (i === current) video.play().catch(() => {});
+            else video.pause();
+          }
+        });
+        dots.forEach((dot, i) => dot.classList.toggle("active", i === current));
+      };
+      dots.forEach((dot) => {
+        dot.addEventListener("click", () => show(Number(dot.dataset.dotIndex || 0)));
+      });
+      setInterval(() => show(current + 1), 7000);
+    }
+
+    async function loadPublicSlides(pageKey, targetId, mediaType, fallbackTitle, hideWhenEmpty = false) {
+      const target = document.getElementById(targetId);
+      if (!target || !configured) {
+        if (target && hideWhenEmpty) target.closest(".page-slide-section")?.classList.add("hidden");
+        return;
+      }
+      try {
+        const rows = await supabaseRequest(
+          "page_slides",
+          `?select=*&page_key=eq.${encodeURIComponent(pageKey)}&media_type=eq.${encodeURIComponent(mediaType)}&is_active=eq.true&order=display_order.asc,created_at.asc`
+        );
+        if (!rows || !rows.length) {
+          if (hideWhenEmpty) target.closest(".page-slide-section")?.classList.add("hidden");
+          return;
+        }
+        target.innerHTML = publicSlideMarkup(rows, fallbackTitle);
+        startSlideshow(target.querySelector(".slide-stage"));
+      } catch (error) {
+        if (hideWhenEmpty) target.closest(".page-slide-section")?.classList.add("hidden");
+      }
+    }
+
+
+    function givingVerseMarkup(index = 0) {
+      const verse = GIVING_VERSES[index % GIVING_VERSES.length];
+      return `
+        <span class="verse-label">Biblical giving reflection</span>
+        <blockquote>“${escapeHtml(verse.text)}”</blockquote>
+        <cite>${escapeHtml(verse.reference)}</cite>
+      `;
+    }
+
+    function startGivingVerseRotation() {
+      const target = document.getElementById("givingVerseBox");
+      if (!target || !church.stewardshipVersesEnabled) return;
+      let index = Math.floor(Date.now() / 60000) % GIVING_VERSES.length;
+      const render = () => {
+        target.innerHTML = givingVerseMarkup(index);
+        index = (index + 1) % GIVING_VERSES.length;
+      };
+      render();
+      if (givingVerseTimer) clearInterval(givingVerseTimer);
+      givingVerseTimer = setInterval(render, 60000);
+    }
+
+    async function loadGivingStewardshipImages() {
+      const target = document.getElementById("givingStewardshipSlides");
+      if (!target || !configured) return;
+      try {
+        const rows = await supabaseRequest(
+          "page_slides",
+          `?select=*&page_key=eq.giving_stewardship&media_type=eq.image&is_active=eq.true&order=display_order.asc,created_at.asc`
+        );
+        if (!rows || !rows.length) return;
+        target.innerHTML = publicSlideMarkup(rows, "Stewardship image slideshow");
+        startSlideshow(target.querySelector(".slide-stage"));
+      } catch (error) {
+        target.innerHTML = "";
+      }
+    }
+
+    async function renderHome() {
+      app.innerHTML = `
+        ${setupNotice()}
+        <section class="hero">
+          <div class="container hero-grid">
+            <div>
+              <span class="eyebrow">Sundays at 8:30 AM and 10:30 AM</span>
+              <h1>Welcome to ${escapeHtml(church.name)}</h1>
+              <p>${escapeHtml(church.tagline)}</p>
+              <div class="hero-actions">
+                <a class="btn btn-gold" href="#/events">Join Us This Sunday</a>
+                <a class="btn btn-light" href="${escapeHtml(church.streamUrl)}" target="_blank" rel="noreferrer">Watch Online</a>
+              </div>
+            </div>
+            <div class="hero-card">
+              <div id="homeHeroSlideshow" class="slide-stage slide-stage-home">
+                <div class="art" style="min-height:430px">
+                  <div class="art-inner">
+                    <span class="muted-label">This Sunday</span>
+                    <h2>Worship, Word, and Community</h2>
+                    <p>Bring your family and friends for a warm church experience centered on Christ, prayer, and practical teaching.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="quick-bar">
+          <div class="container quick-grid">
+            <div class="quick-item"><span>Service Times</span><strong>${escapeHtml(church.serviceTimes)}</strong></div>
+            <div class="quick-item"><span>Address</span><strong>${escapeHtml(church.address)}</strong></div>
+            <div class="quick-item"><span>Online Stream</span><strong><a href="${escapeHtml(church.streamUrl)}" target="_blank">Watch live service</a></strong></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="container">
+            ${sectionHead("Sermons", "Latest Sermon", "Catch the most recent message from our worship gathering.")}
+            <div id="latestSermon">${state("Loading latest sermon...")}</div>
+          </div>
+        </section>
+
+        <section class="section white">
+          <div class="container">
+            ${sectionHead("Events", "Upcoming Events", "Join a gathering, class, outreach, or worship night.")}
+            <div id="upcomingEvents">${state("Loading upcoming events...")}</div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="container grid grid-3">
+            ${["Worship", "Discipleship", "Mission"].map((title, index) => `
+              <div class="feature-box">
+                <div class="icon-circle">✦</div>
+                <h3>${title}</h3>
+                <p>${[
+                  "Experience Christ-centered worship and biblical teaching each week.",
+                  "Grow through small groups, classes, prayer, and spiritual formation.",
+                  "Serve our city through compassion, outreach, and practical support."
+                ][index]}</p>
+              </div>
+            `).join("")}
+          </div>
+        </section>
+
+        <section class="newsletter">
+          <div class="container newsletter-grid">
+            <div>
+              <span class="eyebrow">Stay Connected</span>
+              <h2>Receive weekly updates and event reminders.</h2>
+              <p>Get sermons, ministry news, and upcoming church events in your inbox.</p>
+            </div>
+            <form class="inline-form" id="newsletterForm">
+              <input class="input" name="email" type="email" placeholder="you@example.com" required>
+              <button class="btn btn-dark" type="submit">Join List</button>
+            </form>
+          </div>
+        </section>
+      `;
+
+      bindNewsletter();
+      loadPublicSlides("home", "homeHeroSlideshow", "image", "Home slideshow");
+
+      try {
+        const sermons = await supabaseRequest("sermons", "?select=*&order=date.desc&limit=1");
+        const s = sermons && sermons[0];
+        document.getElementById("latestSermon").innerHTML = s ? `
+          <div class="two-col-card">
+            ${media(s.thumbnail_url, "Latest sermon")}
+            <div class="content">
+              <span class="date">${formatDate(s.date)}</span>
+              <h2>${escapeHtml(s.title)}</h2>
+              <p><strong>${escapeHtml(s.speaker)}</strong></p>
+              ${s.description ? `<p>${escapeHtml(truncate(s.description, 260))}</p>` : ""}
+              <div class="hero-actions">
+                <a class="btn btn-primary" href="#/sermons/${escapeHtml(s.id)}">View Sermon</a>
+                ${s.video_url ? `<a class="btn btn-light" href="${escapeHtml(s.video_url)}" target="_blank">Play Video</a>` : ""}
+              </div>
+            </div>
+          </div>
+        ` : state("Sermons will appear here soon.");
+      } catch (error) {
+        document.getElementById("latestSermon").innerHTML = state(error.message);
+      }
+
+      try {
+        const now = encodeURIComponent(new Date().toISOString());
+        const events = await supabaseRequest("events", `?select=*&start_datetime=gt.${now}&order=start_datetime.asc&limit=3`);
+        document.getElementById("upcomingEvents").innerHTML = events && events.length
+          ? `<div class="grid grid-3">${events.map(eventCard).join("")}</div>`
+          : state("Upcoming events will appear here soon.");
+      } catch (error) {
+        document.getElementById("upcomingEvents").innerHTML = state(error.message);
+      }
+    }
+
+    async function renderAbout() {
+      app.innerHTML = `
+        ${setupNotice()}
+        ${pageHero("About Us", "A church family pursuing Christ and serving our community.", "Our mission is to help people know Jesus, grow in faith, find meaningful community, and serve the world with love.")}
+        <section class="section">
+          <div class="container grid grid-2">
+            <div>
+              ${sectionHead("Mission and Vision", "Helping people become faithful disciples of Jesus.", "We gather for worship, grow through discipleship, and go into the world as witnesses of Christ's love.")}
+              <div class="dark-panel">
+                <h2>Our Vision</h2>
+                <p>We envision a church where families are strengthened, young people are equipped, leaders are formed, and the city is blessed through the gospel of Jesus Christ.</p>
+              </div>
+            </div>
+            <div class="form-card">
+              <h2>What We Believe</h2>
+              <div class="accordion" id="beliefs">
+                ${[
+                  ["The Bible", "We believe Scripture is inspired by God and is the trustworthy authority for faith, life, worship, and mission."],
+                  ["God", "We believe in one God who eternally exists as Father, Son, and Holy Spirit, perfect in love, holiness, justice, and mercy."],
+                  ["Jesus Christ", "We believe Jesus Christ is fully God and fully human, crucified for sin, risen from the dead, and Lord over all creation."],
+                  ["Salvation", "We believe salvation is received by grace through faith in Jesus Christ, not by human achievement or religious performance."],
+                  ["The Holy Spirit", "We believe the Holy Spirit empowers believers for worship, holiness, witness, service, and spiritual gifts."],
+                  ["The Church", "We believe the church is the family of God, called to worship, discipleship, fellowship, evangelism, and compassionate service."]
+                ].map((b, i) => `
+                  <div class="accordion-item ${i === 0 ? "open" : ""}">
+                    <button class="accordion-head" type="button"><span>${b[0]}</span><span>+</span></button>
+                    <div class="accordion-body">${b[1]}</div>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section white">
+          <div class="container">
+            ${sectionHead("Our Team", "Meet the leaders serving our church.", "Our staff and ministry leaders are committed to prayerful care, biblical teaching, and faithful service.", true)}
+            <div id="teamGrid">${state("Loading team members...")}</div>
+          </div>
+        </section>
+      `;
+
+      document.querySelectorAll(".accordion-head").forEach((btn) => {
+        btn.addEventListener("click", () => btn.parentElement.classList.toggle("open"));
+      });
+
+      try {
+        const team = await supabaseRequest("team", "?select=*&order=order.asc.nullslast");
+        document.getElementById("teamGrid").innerHTML = team && team.length
+          ? `<div class="grid grid-3">${team.map((m) => `
+              <article class="card">
+                ${media(m.photo_url, "Team photo")}
+                <div class="card-body">
+                  <h3>${escapeHtml(m.name)}</h3>
+                  <p><strong>${escapeHtml(m.role)}</strong></p>
+                  ${m.bio ? `<p>${escapeHtml(truncate(m.bio))}</p>` : ""}
+                  ${m.email ? `<p>${escapeHtml(m.email)}</p>` : ""}
+                </div>
+              </article>
+            `).join("")}</div>`
+          : state("Team profiles will appear here soon.");
+      } catch (error) {
+        document.getElementById("teamGrid").innerHTML = state(error.message);
+      }
+    }
+
+    async function renderSermons(id) {
+      if (id) return renderSermonDetail(id);
+
+      const sermonHeroTitle = "Messages to strengthen your walk with Christ.";
+      const sermonHeroDescription = "Browse recent sermons, teaching series, audio messages, and study notes.";
+
+      app.innerHTML = `
+        ${setupNotice()}
+        <div id="sermonsTopHero">
+          ${pageHero("Sermons", sermonHeroTitle, sermonHeroDescription)}
+        </div>
+        <section class="section">
+          <div class="container">
+            <div id="sermonsList">${state("Loading sermons...")}</div>
+          </div>
+        </section>
+      `;
+
+      loadPublicHeroSlides(
+        "sermons",
+        "sermonsTopHero",
+        "video",
+        "Sermon video slideshow",
+        "Sermons",
+        sermonHeroTitle,
+        sermonHeroDescription
+      );
+
+      try {
+        const sermons = await supabaseRequest("sermons", "?select=*&order=date.desc");
+        document.getElementById("sermonsList").innerHTML = sermons && sermons.length
+          ? `<div class="grid grid-3">${sermons.map(sermonCard).join("")}</div>`
+          : state("Sermons will appear here soon.");
+      } catch (error) {
+        document.getElementById("sermonsList").innerHTML = state(error.message);
+      }
+    }
+
+    async function renderSermonDetail(id) {
+      app.innerHTML = `
+        ${setupNotice()}
+        <section class="detail">
+          <div class="container">
+            <p><a class="btn btn-light" href="#/sermons">← Back to Sermons</a></p>
+            <div id="sermonDetail">${state("Loading sermon...")}</div>
+          </div>
+        </section>
+      `;
+
+      try {
+        const rows = await supabaseRequest("sermons", `?select=*&id=eq.${encodeURIComponent(id)}&limit=1`);
+        const s = rows && rows[0];
+        if (!s) {
+          document.getElementById("sermonDetail").innerHTML = state("Sermon not found.");
+          return;
+        }
+
+        document.getElementById("sermonDetail").innerHTML = `
+          <article class="detail-card">
+            ${media(s.thumbnail_url, "Sermon detail")}
+            <div class="detail-body">
+              <span class="date">${formatDate(s.date)}</span>
+              <h1>${escapeHtml(s.title)}</h1>
+              <p><strong>${escapeHtml(s.speaker)}</strong></p>
+              ${s.series ? `<span class="pill">Series: ${escapeHtml(s.series)}</span>` : ""}
+              ${s.scripture_reference ? `<span class="pill">${escapeHtml(s.scripture_reference)}</span>` : ""}
+              ${s.description ? `<p>${escapeHtml(s.description)}</p>` : ""}
+              ${s.video_url ? `<div class="video-wrap"><iframe src="${escapeHtml(getEmbedUrl(s.video_url))}" title="${escapeHtml(s.title)}" allowfullscreen></iframe></div>` : ""}
+              ${s.audio_url ? `<p><audio controls style="width:100%"><source src="${escapeHtml(s.audio_url)}">Your browser does not support audio.</audio></p>` : ""}
+              ${s.notes_url ? `<p><a class="btn btn-primary" href="${escapeHtml(s.notes_url)}" target="_blank">Download Notes</a></p>` : ""}
+            </div>
+          </article>
+        `;
+      } catch (error) {
+        document.getElementById("sermonDetail").innerHTML = state(error.message);
+      }
+    }
+
+    async function renderEvents(id) {
+      if (id) return renderEventDetail(id);
+
+      const eventsHeroTitle = "Gather with us throughout the week.";
+      const eventsHeroDescription = "Explore worship services, ministry meetings, outreach events, classes, and church-wide gatherings.";
+
+      app.innerHTML = `
+        ${setupNotice()}
+        <div id="eventsTopHero">
+          ${pageHero("Events", eventsHeroTitle, eventsHeroDescription)}
+        </div>
+        <section class="section">
+          <div class="container">
+            <div id="eventsList">${state("Loading events...")}</div>
+          </div>
+        </section>
+      `;
+
+      loadPublicHeroSlides(
+        "events",
+        "eventsTopHero",
+        "image",
+        "Events slideshow",
+        "Events",
+        eventsHeroTitle,
+        eventsHeroDescription
+      );
+
+      try {
+        const now = encodeURIComponent(new Date().toISOString());
+        const events = await supabaseRequest("events", `?select=*&start_datetime=gt.${now}&order=start_datetime.asc`);
+        document.getElementById("eventsList").innerHTML = events && events.length
+          ? `<div class="grid grid-3">${events.map(eventCard).join("")}</div>`
+          : state("Upcoming events will appear here soon.");
+      } catch (error) {
+        document.getElementById("eventsList").innerHTML = state(error.message);
+      }
+    }
+
+    async function renderEventDetail(id) {
+      app.innerHTML = `
+        ${setupNotice()}
+        <section class="detail">
+          <div class="container">
+            <p><a class="btn btn-light" href="#/events">← Back to Events</a></p>
+            <div id="eventDetail">${state("Loading event...")}</div>
+          </div>
+        </section>
+      `;
+
+      try {
+        const rows = await supabaseRequest("events", `?select=*&id=eq.${encodeURIComponent(id)}&limit=1`);
+        const e = rows && rows[0];
+        if (!e) {
+          document.getElementById("eventDetail").innerHTML = state("Event not found.");
+          return;
+        }
+
+        document.getElementById("eventDetail").innerHTML = `
+          <article class="detail-card">
+            ${media(e.image_url, "Event detail")}
+            <div class="detail-body">
+              <span class="date">${formatDateTime(e.start_datetime)}</span>
+              <h1>${escapeHtml(e.title)}</h1>
+              ${e.location ? `<p><strong>Location:</strong> ${escapeHtml(e.location)}</p>` : ""}
+              <div class="grid grid-2">
+                <div class="quick-item"><span>Starts</span><strong>${formatDateTime(e.start_datetime)}</strong></div>
+                <div class="quick-item"><span>Ends</span><strong>${formatDateTime(e.end_datetime)}</strong></div>
+              </div>
+              ${e.description ? `<p>${escapeHtml(e.description)}</p>` : ""}
+              <iframe class="map" title="Map" loading="lazy" src="https://www.google.com/maps?q=5.6037,-0.1870&z=14&output=embed"></iframe>
+              <div class="hero-actions">
+                ${e.registration_url ? `<a class="btn btn-primary" href="${escapeHtml(e.registration_url)}" target="_blank">Register for Event</a>` : ""}
+                <a class="btn btn-light" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(e.location || church.address)}" target="_blank">Open in Google Maps</a>
+              </div>
+            </div>
+          </article>
+        `;
+      } catch (error) {
+        document.getElementById("eventDetail").innerHTML = state(error.message);
+      }
+    }
+
+    async function renderMinistries() {
+      app.innerHTML = `
+        ${setupNotice()}
+        ${pageHero("Ministries", "Find your place to grow and serve.", "Explore ministries for children, youth, adults, families, worship, outreach, and community care.")}
+        <section class="section">
+          <div class="container">
+            <div id="ministriesList">${state("Loading ministries...")}</div>
+          </div>
+        </section>
+      `;
+
+      try {
+        const ministries = await supabaseRequest("ministries", "?select=*&order=name.asc");
+        document.getElementById("ministriesList").innerHTML = ministries && ministries.length
+          ? `<div class="grid grid-3">${ministries.map(ministryCard).join("")}</div>`
+          : state("Ministries will appear here soon.");
+      } catch (error) {
+        document.getElementById("ministriesList").innerHTML = state(error.message);
+      }
+    }
+
+    function renderGive() {
+      app.innerHTML = `
+        ${pageHero("Give", church.giveTitle, church.giveSubtitle)}
+        <section class="section">
+          <div class="container grid grid-2">
+            <div class="form-card">
+              ${sectionHead("Ways to Give", church.giveIntroTitle, church.giveIntroText)}
+
+              <div class="quick-item">
+                <h3>${escapeHtml(church.onlineGivingTitle)}</h3>
+                <p>${escapeHtml(church.onlineGivingDescription)}</p>
+                ${church.givingUrl ? `<a class="btn btn-primary" href="${escapeHtml(church.givingUrl)}" target="_blank">Give Online</a>` : ""}
+              </div>
+
+              ${church.momoEnabled ? `
+                <br>
+                <div class="quick-item">
+                  <h3>${escapeHtml(church.momoTitle)}</h3>
+                  ${church.momoInstructions ? `<p>${escapeHtml(church.momoInstructions)}</p>` : ""}
+                  <p><strong>Network:</strong><br>${escapeHtml(church.momoNetwork)}</p>
+                  <p><strong>MoMo Name:</strong><br>${escapeHtml(church.momoName)}</p>
+                  <p><strong>MoMo Number:</strong><br>${escapeHtml(church.momoNumber)}</p>
+                  <p><strong>Reference:</strong><br>${escapeHtml(church.momoReference)}</p>
+                </div>
+              ` : ""}
+
+              <br>
+              <div class="quick-item">
+                <h3>${escapeHtml(church.bankTransferTitle)}</h3>
+                <p><strong>Bank:</strong><br>${escapeHtml(church.bankName)}</p>
+                <p><strong>Account Name:</strong><br>${escapeHtml(church.bankAccountName)}</p>
+                <p><strong>Account Number:</strong><br>${escapeHtml(church.bankAccountNumber)}</p>
+                <p><strong>Reference:</strong><br>${escapeHtml(church.bankReference)}</p>
+              </div>
+
+              <br>
+              <div class="quick-item">
+                <h3>${escapeHtml(church.inPersonTitle)}</h3>
+                <p>${escapeHtml(church.inPersonText)}</p>
+              </div>
+            </div>
+
+            <div class="dark-panel giving-stewardship-panel">
+              <span class="eyebrow">Stewardship</span>
+              <h2>${escapeHtml(church.stewardshipTitle)}</h2>
+              <p>${escapeHtml(church.stewardshipText)}</p>
+              ${church.stewardshipVersesEnabled ? `<div class="giving-verse-box" id="givingVerseBox"></div>` : ""}
+              <div id="givingStewardshipSlides" class="giving-stewardship-slides"></div>
+            </div>
+          </div>
+        </section>
+      `;
+      startGivingVerseRotation();
+      loadGivingStewardshipImages();
+    }
+
+    function renderContact() {
+      app.innerHTML = `
+        ${setupNotice()}
+        ${pageHero("Contact", "We would love to hear from you.", "Send a message, request prayer, or visit us during the week. Our church team will respond as soon as possible.")}
+        <section class="section">
+          <div class="container grid grid-2">
+            ${contactFormHtml()}
+            <div>
+              <div class="dark-panel">
+                <h2>Church Information</h2>
+                <p><strong>Address:</strong> ${escapeHtml(church.address)}</p>
+                <p><strong>Phone:</strong> ${escapeHtml(church.phone)}</p>
+                <p><strong>Email:</strong> ${escapeHtml(church.email)}</p>
+                <p><strong>Service Times:</strong> ${escapeHtml(church.serviceTimes)}</p>
+              </div>
+              <br>
+              <iframe class="map" title="Church location" loading="lazy" src="https://www.google.com/maps?q=5.6037,-0.1870&z=14&output=embed"></iframe>
+            </div>
+          </div>
+        </section>
+
+        <section class="section white">
+          <div class="container" style="max-width:820px">
+            ${sectionHead("Prayer", "Submit a prayer request", "Our team would be honored to pray with you.", true)}
+            ${prayerFormHtml()}
+          </div>
+        </section>
+      `;
+
+      bindContactForm();
+      bindPrayerForm();
+    }
+
+    function renderPrayer() {
+      app.innerHTML = `
+        ${setupNotice()}
+        ${pageHero("Prayer Requests", "We believe in praying with one another.", "Submit a prayer request for pastoral care, intercession, encouragement, or private prayer support.")}
+        <section class="section">
+          <div class="container" style="max-width:820px">
+            ${prayerFormHtml()}
+          </div>
+        </section>
+      `;
+      bindPrayerForm();
+    }
+
+    function contactFormHtml() {
+      return `
+        <form class="form-card form-grid" id="contactForm">
+          <div>
+            <label class="label">Name</label>
+            <input class="input" name="name" placeholder="Your name" required>
+          </div>
+          <div>
+            <label class="label">Email</label>
+            <input class="input" name="email" type="email" placeholder="you@example.com" required>
+          </div>
+          <div>
+            <label class="label">Subject</label>
+            <input class="input" name="subject" placeholder="How can we help?">
+          </div>
+          <div>
+            <label class="label">Message</label>
+            <textarea class="textarea" name="message" placeholder="Write your message" required></textarea>
+          </div>
+          <button class="btn btn-primary" type="submit">Send Message</button>
+          <div id="contactStatus"></div>
+        </form>
+      `;
+    }
+
+    function prayerFormHtml() {
+      return `
+        <form class="form-card form-grid" id="prayerForm">
+          <div>
+            <label class="label">Name, optional</label>
+            <input class="input" name="name" placeholder="Your name">
+          </div>
+          <div>
+            <label class="label">Prayer Request</label>
+            <textarea class="textarea" name="request" placeholder="How can we pray with you?" required></textarea>
+          </div>
+          <label style="display:flex;gap:10px;align-items:flex-start;background:#f8fafc;padding:14px;border-radius:18px;color:#475569">
+            <input name="is_public" type="checkbox" style="margin-top:4px">
+            <span>Allow this request to be shared with the prayer team publicly. Leave unchecked for private staff review.</span>
+          </label>
+          <button class="btn btn-primary" type="submit">Submit Prayer Request</button>
+          <div id="prayerStatus"></div>
+        </form>
+      `;
+    }
+
+    function bindNewsletter() {
+      const form = document.getElementById("newsletterForm");
+      if (!form) return;
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const button = form.querySelector("button");
+        button.disabled = true;
+        button.textContent = "Joining...";
+
+        try {
+          const email = form.email.value.trim().toLowerCase();
+          await supabaseRequest("subscribers", "", {
+            method: "POST",
+            prefer: "return=minimal",
+            body: { email }
+          });
+          form.insertAdjacentHTML("afterend", `<div class="message success">Thank you for subscribing.</div>`);
+          form.reset();
+        } catch (error) {
+          form.insertAdjacentHTML("afterend", `<div class="message error">${escapeHtml(error.message)}</div>`);
+        } finally {
+          button.disabled = false;
+          button.textContent = "Join List";
+        }
+      });
+    }
+
+    function bindContactForm() {
+      const form = document.getElementById("contactForm");
+      if (!form) return;
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const status = document.getElementById("contactStatus");
+        const button = form.querySelector("button");
+        button.disabled = true;
+        button.textContent = "Sending...";
+        status.innerHTML = "";
+
+        try {
+          await supabaseRequest("contact_messages", "", {
+            method: "POST",
+            prefer: "return=minimal",
+            body: {
+              name: form.name.value.trim(),
+              email: form.email.value.trim().toLowerCase(),
+              subject: form.subject.value.trim() || null,
+              message: form.message.value.trim()
+            }
+          });
+          status.innerHTML = `<div class="message success">Your message has been sent. Our team will contact you soon.</div>`;
+          form.reset();
+        } catch (error) {
+          status.innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+        } finally {
+          button.disabled = false;
+          button.textContent = "Send Message";
+        }
+      });
+    }
+
+    function bindPrayerForm() {
+      const form = document.getElementById("prayerForm");
+      if (!form) return;
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const status = document.getElementById("prayerStatus");
+        const button = form.querySelector("button");
+        button.disabled = true;
+        button.textContent = "Submitting...";
+        status.innerHTML = "";
+
+        try {
+          await supabaseRequest("prayer_requests", "", {
+            method: "POST",
+            prefer: "return=minimal",
+            body: {
+              name: form.name.value.trim() || null,
+              request: form.request.value.trim(),
+              is_public: form.is_public.checked
+            }
+          });
+          status.innerHTML = `<div class="message success">Your prayer request has been received.</div>`;
+          form.reset();
+        } catch (error) {
+          status.innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+        } finally {
+          button.disabled = false;
+          button.textContent = "Submit Prayer Request";
+        }
+      });
+    }
+
+    function getEmbedUrl(url) {
+      try {
+        const parsed = new URL(url);
+        if (parsed.hostname.includes("youtube.com") && parsed.searchParams.get("v")) {
+          return "https://www.youtube.com/embed/" + parsed.searchParams.get("v");
+        }
+        if (parsed.hostname.includes("youtu.be")) {
+          return "https://www.youtube.com/embed/" + parsed.pathname.replace("/", "");
+        }
+        if (parsed.hostname.includes("vimeo.com") && !parsed.hostname.includes("player")) {
+          const id = parsed.pathname.split("/").filter(Boolean).pop();
+          return "https://player.vimeo.com/video/" + id;
+        }
+        return url;
+      } catch {
+        return url;
+      }
+    }
+
+
+    const ADMIN_RESOURCES = {
+      sermons: {
+        label: "Sermons",
+        table: "sermons",
+        order: "order=date.desc",
+        columns: ["title", "speaker", "date", "scripture_reference"],
+        fields: [
+          { name: "title", label: "Title", required: true },
+          { name: "speaker", label: "Speaker", required: true },
+          { name: "date", label: "Date", type: "date", required: true },
+          { name: "series", label: "Series" },
+          { name: "scripture_reference", label: "Scripture Reference" },
+          { name: "description", label: "Description", type: "textarea", full: true },
+          { name: "video_url", label: "YouTube or Vimeo URL" },
+          { name: "thumbnail_url", label: "Thumbnail URL", upload: { bucket: "sermon-thumbnails", accept: "image/*" } },
+          { name: "audio_url", label: "Audio URL", upload: { bucket: "sermon-audio", accept: "audio/*" } },
+          { name: "notes_url", label: "Notes PDF URL", upload: { bucket: "sermon-notes", accept: "application/pdf" } }
+        ]
+      },
+      events: {
+        label: "Events",
+        table: "events",
+        order: "order=start_datetime.desc",
+        columns: ["title", "start_datetime", "end_datetime", "location"],
+        fields: [
+          { name: "title", label: "Title", required: true },
+          { name: "location", label: "Location" },
+          { name: "start_datetime", label: "Start Date and Time", type: "datetime-local", required: true },
+          { name: "end_datetime", label: "End Date and Time", type: "datetime-local", required: true },
+          { name: "description", label: "Description", type: "textarea", full: true },
+          { name: "image_url", label: "Image URL", upload: { bucket: "event-images", accept: "image/*" } },
+          { name: "registration_url", label: "Registration URL" },
+          { name: "is_featured", label: "Featured Event", type: "checkbox" }
+        ]
+      },
+      team: {
+        label: "Team",
+        table: "team",
+        order: "order=order.asc.nullslast",
+        columns: ["name", "role", "email", "order"],
+        fields: [
+          { name: "name", label: "Name", required: true },
+          { name: "role", label: "Role", required: true },
+          { name: "email", label: "Email", type: "email" },
+          { name: "order", label: "Display Order", type: "number" },
+          { name: "bio", label: "Bio", type: "textarea", full: true },
+          { name: "photo_url", label: "Photo URL", upload: { bucket: "team-photos", accept: "image/*" } }
+        ]
+      },
+      ministries: {
+        label: "Ministries",
+        table: "ministries",
+        order: "order=name.asc",
+        columns: ["name", "meeting_time", "contact_person", "contact_email"],
+        fields: [
+          { name: "name", label: "Name", required: true },
+          { name: "meeting_time", label: "Meeting Time" },
+          { name: "contact_person", label: "Contact Person" },
+          { name: "contact_email", label: "Contact Email", type: "email" },
+          { name: "description", label: "Description", type: "textarea", full: true },
+          { name: "image_url", label: "Image URL", upload: { bucket: "ministry-images", accept: "image/*" } }
+        ]
+      }
+    };
+
+    const ADMIN_INBOX = {
+      contact_messages: {
+        label: "Contact Messages",
+        table: "contact_messages",
+        order: "order=created_at.desc",
+        columns: ["name", "email", "subject", "created_at"],
+        bodyField: "message"
+      },
+      subscribers: {
+        label: "Subscribers",
+        table: "subscribers",
+        order: "order=subscribed_at.desc",
+        columns: ["email", "subscribed_at"]
+      },
+      prayer_requests: {
+        label: "Prayer Requests",
+        table: "prayer_requests",
+        order: "order=created_at.desc",
+        columns: ["name", "is_public", "created_at"],
+        bodyField: "request",
+        editablePublic: true
+      }
+    };
+
+    let adminRowsCache = [];
+
+    function adminNavHtml(active = "dashboard") {
+      const links = [
+        ["dashboard", "Dashboard"],
+        ["settings", "Site Settings"],
+        ["slides", "Page Slides"],
+        ["giving", "Giving"],
+        ["media", "Media Uploads"],
+        ["sermons", "Sermons"],
+        ["events", "Events"],
+        ["team", "Team"],
+        ["ministries", "Ministries"],
+        ["contact_messages", "Messages"],
+        ["subscribers", "Subscribers"],
+        ["prayer_requests", "Prayer"]
+      ];
+
+      return `
+        <aside class="admin-sidebar">
+          ${links.map(([key, label]) => `<a class="${active === key ? "active" : ""}" href="#/admin/${key}">${label}</a>`).join("")}
+          <button type="button" id="adminLogoutBtn">Logout</button>
+          <a href="#/">View Website</a>
+        </aside>
+      `;
+    }
+
+    function adminShell(active, title, subtitle, content) {
+      const session = getAdminSession();
+      return `
+        ${setupNotice()}
+        <section class="admin-shell">
+          <div class="container admin-layout">
+            ${adminNavHtml(active)}
+            <div class="admin-main">
+              <div class="admin-topbar">
+                <div>
+                  <h1>${escapeHtml(title)}</h1>
+                  <p>${escapeHtml(subtitle || "")}</p>
+                  ${session && session.user && session.user.email ? `<p class="admin-muted">Logged in as ${escapeHtml(session.user.email)}</p>` : ""}
+                </div>
+                <a class="btn btn-light" href="#/">Open Public Site</a>
+              </div>
+              ${content}
+            </div>
+          </div>
+        </section>
+      `;
+    }
+
+    function bindAdminShell() {
+      const logout = document.getElementById("adminLogoutBtn");
+      if (logout) {
+        logout.addEventListener("click", () => {
+          clearAdminSession();
+          location.hash = "#/admin";
+          router();
+        });
+      }
+    }
+
+    function renderAdmin(active = "dashboard") {
+      if (!getAdminSession()) return renderAdminLogin();
+      if (active === "settings") return renderAdminSiteSettings();
+      if (active === "slides") return renderAdminSlidesEditor();
+      if (active === "giving") return renderAdminGivingSettings();
+      if (active === "media") return renderAdminMediaUploads();
+      if (ADMIN_RESOURCES[active]) return renderAdminResource(active);
+      if (ADMIN_INBOX[active]) return renderAdminInbox(active);
+      return renderAdminDashboard();
+    }
+
+    function renderAdminLogin() {
+      app.innerHTML = `
+        ${setupNotice()}
+        <section class="admin-login">
+          <form class="form-card form-grid" id="adminLoginForm">
+            <div>
+              <span class="eyebrow" style="background:#eef6ff;color:#1554a6;border:0">Admin Login</span>
+              <h1 style="margin:8px 0 8px;font-size:34px;line-height:1.08">Website Dashboard</h1>
+              <p class="admin-muted">Sign in to manage site settings, giving details, media uploads, sermons, events, team, ministries, messages, subscribers, and prayer requests.</p>
+            </div>
+            <div>
+              <label class="label">Admin Email</label>
+              <input class="input" name="email" type="email" placeholder="admin@example.com" required>
+            </div>
+            <div>
+              <label class="label">Password</label>
+              <input class="input" name="password" type="password" placeholder="Your password" required>
+            </div>
+            <button class="btn btn-primary" type="submit">Login to Dashboard</button>
+            <div id="adminLoginStatus"></div>
+          </form>
+        </section>
+      `;
+
+      const form = document.getElementById("adminLoginForm");
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const status = document.getElementById("adminLoginStatus");
+        const button = form.querySelector("button");
+        status.innerHTML = "";
+        button.disabled = true;
+        button.textContent = "Logging in...";
+        try {
+          await adminLogin(form.email.value.trim().toLowerCase(), form.password.value);
+          location.hash = "#/admin/dashboard";
+          router();
+        } catch (error) {
+          status.innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+        } finally {
+          button.disabled = false;
+          button.textContent = "Login to Dashboard";
+        }
+      });
+    }
+
+    async function renderAdminDashboard() {
+      app.innerHTML = adminShell("dashboard", "Admin Dashboard", "Manage the live website content connected to Supabase.", `
+        <div class="admin-stats" id="adminStats">
+          ${state("Loading dashboard summary...")}
+        </div>
+        <div class="admin-card">
+          <h2 style="margin-top:0">Dashboard Navigation</h2>
+          <p class="admin-muted">Manage public content and private submissions from one place.</p>
+          <div class="grid grid-3" style="margin-top:18px">
+            <a class="feature-box" href="#/admin/settings"><h3>Site Settings</h3><p>Edit church name, logo, service times, contact details, giving link, live stream link, header theme, and footer theme.</p></a>
+            <a class="feature-box" href="#/admin/slides"><h3>Page Slides</h3><p>Upload multiple home slideshow images, sermon page videos, and event page images.</p></a>
+            <a class="feature-box" href="#/admin/giving"><h3>Giving</h3><p>Edit online giving, Mobile Money, bank transfer, in-person giving, and stewardship text.</p></a>
+            <a class="feature-box" href="#/admin/media"><h3>Media Uploads</h3><p>Upload images, audio, sermon notes, and copy public media URLs.</p></a>
+            ${Object.entries(ADMIN_RESOURCES).map(([key, cfg]) => `<a class="feature-box" href="#/admin/${key}"><h3>${cfg.label}</h3><p>Manage ${cfg.label.toLowerCase()}.</p></a>`).join("")}
+            ${Object.entries(ADMIN_INBOX).map(([key, cfg]) => `<a class="feature-box" href="#/admin/${key}"><h3>${cfg.label}</h3><p>Manage ${cfg.label.toLowerCase()}.</p></a>`).join("")}
+          </div>
+        </div>
+      `);
+      bindAdminShell();
+
+      try {
+        const counts = await Promise.all([
+          adminCount("sermons"),
+          adminCount("events"),
+          adminCount("team"),
+          adminCount("ministries")
+        ]);
+        document.getElementById("adminStats").innerHTML = ["Sermons", "Events", "Team", "Ministries"].map((label, i) => `
+          <div class="admin-stat"><span class="muted-label">${label}</span><strong>${counts[i]}</strong></div>
+        `).join("");
+      } catch (error) {
+        document.getElementById("adminStats").innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+      }
+    }
+
+    async function adminCount(table) {
+      const rows = await supabaseRequest(table, "?select=id", { auth: true });
+      return Array.isArray(rows) ? rows.length : 0;
+    }
+
+    async function renderAdminSiteSettings() {
+      app.innerHTML = adminShell("settings", "Site Settings", "Edit the website identity and contact information shown on the public pages.", `
+        <div class="admin-card">
+          <form id="siteSettingsForm" class="admin-form-grid">
+            ${adminSettingsField("church_name", "Church Name", church.name, true)}
+            ${adminSettingsField("tagline", "Tagline", church.tagline)}
+            ${adminLogoUploadField(church.logoUrl)}
+            ${themeSelectField("header_theme", "Header Theme", THEME_OPTIONS, church.headerTheme || "blue")}
+            ${themeSelectField("footer_theme", "Footer Theme", FOOTER_THEME_OPTIONS, church.footerTheme || "midnight")}
+            ${adminSettingsField("address", "Address", church.address, true)}
+            ${adminSettingsField("phone", "Phone", church.phone)}
+            ${adminSettingsField("email", "Email", church.email)}
+            ${adminSettingsField("service_times", "Service Times", church.serviceTimes)}
+            ${adminSettingsField("stream_url", "Live Stream URL", church.streamUrl)}
+            ${adminSettingsField("giving_url", "Giving URL", church.givingUrl)}
+            <div class="full admin-form-actions">
+              <button class="btn btn-primary" type="submit">Save Site Settings</button>
+              <a class="btn btn-light" href="#/">Preview Website</a>
+            </div>
+            <div class="full" id="siteSettingsStatus"></div>
+          </form>
+        </div>
+
+        <div class="admin-card" style="margin-top:22px">
+          <h2 style="margin-top:0">Stewardship Image Slideshow</h2>
+          <p class="admin-muted">Upload beautiful stewardship images for the Give page panel. Active images will rotate professionally beside the giving details.</p>
+          <form class="admin-form-grid page-slide-upload-form" data-slide-group="givingStewardship">
+            <div>
+              <label class="label">Image Title, optional</label>
+              <input class="input" name="title" placeholder="Stewardship, generosity, mission, outreach">
+            </div>
+            <div>
+              <label class="label">Display Order Start</label>
+              <input class="input" name="display_order" type="number" value="10">
+            </div>
+            <div class="full">
+              <label class="label">Subtitle, optional</label>
+              <textarea class="textarea" name="subtitle" placeholder="Short text shown over the stewardship image"></textarea>
+            </div>
+            <div>
+              <label class="label">Optional Link URL</label>
+              <input class="input" name="link_url" placeholder="#/give or https://example.com">
+            </div>
+            <div>
+              <label class="label">Upload Stewardship Images</label>
+              <input class="input" name="files" type="file" accept="image/*" multiple required>
+            </div>
+            <div class="full admin-form-actions">
+              <button class="btn btn-primary" type="submit">Upload Stewardship Images</button>
+              <a class="btn btn-light" href="#/give">Preview Give Page</a>
+            </div>
+            <div class="full page-slide-upload-status"></div>
+          </form>
+          <div id="slides_givingStewardship" style="margin-top:20px">${state("Loading stewardship images...")}</div>
+        </div>
+      `);
+      bindAdminShell();
+      bindPageSlideUploadForms();
+      await loadAdminSlides("givingStewardship");
+
+      try {
+        const rows = await supabaseRequest("site_settings", "?select=*&id=eq.main&limit=1", { auth: true });
+        if (rows && rows[0]) {
+          applyChurchSettings(rows[0]);
+          fillSiteSettingsForm(rows[0]);
+        }
+      } catch (error) {
+        document.getElementById("siteSettingsStatus").innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+      }
+
+      const form = document.getElementById("siteSettingsForm");
+      const logoFileInput = form.logo_file;
+      if (logoFileInput) {
+        logoFileInput.addEventListener("change", () => {
+          const file = logoFileInput.files && logoFileInput.files[0];
+          if (!file) return;
+          const previewBox = document.getElementById("logoPreviewBox");
+          const url = URL.createObjectURL(file);
+          if (previewBox) previewBox.querySelector("img, .empty-logo-preview").outerHTML = `<img src="${url}" alt="Church logo preview">`;
+        });
+      }
+      form.querySelectorAll("input[name='header_theme'], input[name='footer_theme']").forEach((input) => {
+        input.addEventListener("change", () => {
+          church.headerTheme = form.header_theme.value;
+          church.footerTheme = form.footer_theme.value;
+          applyThemeSettings();
+        });
+      });
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await saveSiteSettings(form);
+      });
+    }
+
+    function adminSettingsField(name, label, value = "", required = false) {
+      return `
+        <div class="${name === "tagline" || name === "address" ? "full" : ""}">
+          <label class="label" for="settings_${name}">${escapeHtml(label)}</label>
+          <input class="input" id="settings_${name}" name="${name}" value="${escapeHtml(value || "")}" ${required ? "required" : ""}>
+        </div>
+      `;
+    }
+
+    function adminLogoUploadField(value = "") {
+      return `
+        <div class="full">
+          <label class="label" for="settings_logo_file">Church Logo</label>
+          <div class="logo-preview-box" id="logoPreviewBox">
+            ${value ? `<img src="${escapeHtml(value)}" alt="Church logo preview">` : `<div class="empty-logo-preview">Logo</div>`}
+            <div style="min-width:0;flex:1">
+              <input class="input" id="settings_logo_file" name="logo_file" type="file" accept="image/*">
+              <input type="hidden" name="logo_url" value="${escapeHtml(value || "")}">
+              <p class="admin-muted">Upload a church logo. It will appear in the header and footer.</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function themeSelectField(name, label, options, selected) {
+      return `
+        <div class="full">
+          <label class="label">${escapeHtml(label)}</label>
+          <div class="theme-swatch-grid">
+            ${Object.entries(options).map(([key, option]) => `
+              <label class="theme-swatch">
+                <input type="radio" name="${name}" value="${escapeHtml(key)}" ${key === selected ? "checked" : ""}>
+                <span class="theme-dot" style="background:${escapeHtml(option.color)}"></span>
+                <span>${escapeHtml(option.label)}</span>
+              </label>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function fillSiteSettingsForm(settings) {
+      const form = document.getElementById("siteSettingsForm");
+      if (!form || !settings) return;
+      ["church_name", "tagline", "address", "phone", "email", "service_times", "stream_url", "giving_url", "logo_url"].forEach((name) => {
+        if (form.elements[name]) form.elements[name].value = settings[name] || "";
+      });
+      ["header_theme", "footer_theme"].forEach((name) => {
+        if (settings[name]) {
+          Array.from(form.querySelectorAll(`input[name="${name}"]`)).forEach((input) => {
+            input.checked = input.value === settings[name];
+          });
+        }
+      });
+      const previewBox = document.getElementById("logoPreviewBox");
+      if (previewBox && settings.logo_url) {
+        previewBox.querySelector("img, .empty-logo-preview").outerHTML = `<img src="${escapeHtml(settings.logo_url)}" alt="Church logo preview">`;
+      }
+    }
+
+    async function saveSiteSettings(form) {
+      const status = document.getElementById("siteSettingsStatus");
+      const button = form.querySelector("button[type='submit']");
+      status.innerHTML = "";
+      button.disabled = true;
+      button.textContent = "Saving...";
+
+      const logoFile = form.logo_file && form.logo_file.files ? form.logo_file.files[0] : null;
+      let logoUrl = form.logo_url ? form.logo_url.value.trim() : "";
+
+      const payload = {
+        id: "main",
+        church_name: form.church_name.value.trim() || "Grace Community Church",
+        tagline: form.tagline.value.trim() || null,
+        address: form.address.value.trim() || null,
+        phone: form.phone.value.trim() || null,
+        email: form.email.value.trim() || null,
+        service_times: form.service_times.value.trim() || null,
+        stream_url: form.stream_url.value.trim() || null,
+        giving_url: form.giving_url.value.trim() || null,
+        logo_url: logoUrl || null,
+        header_theme: form.header_theme ? form.header_theme.value : "blue",
+        footer_theme: form.footer_theme ? form.footer_theme.value : "midnight",
+        updated_at: new Date().toISOString()
+      };
+
+      try {
+        if (logoFile) {
+          payload.logo_url = await uploadAdminFile("site-assets", logoFile);
+        }
+        let savedWithPatch = false;
+        try {
+          await supabaseRequest("site_settings", "?id=eq.main", {
+            method: "PATCH",
+            auth: true,
+            prefer: "return=minimal",
+            body: payload
+          });
+          savedWithPatch = true;
+        } catch (patchError) {
+          savedWithPatch = false;
+        }
+
+        if (!savedWithPatch) {
+          await supabaseRequest("site_settings", "", {
+            method: "POST",
+            auth: true,
+            prefer: "resolution=merge-duplicates,return=minimal",
+            body: payload
+          });
+        }
+
+        applyChurchSettings(payload);
+        siteSettingsLoaded = true;
+        status.innerHTML = `<div class="message success">Site settings saved successfully.</div>`;
+      } catch (error) {
+        status.innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+      } finally {
+        button.disabled = false;
+        button.textContent = "Save Site Settings";
+      }
+    }
+
+
+    const SLIDE_GROUPS = {
+      home: { label: "Home Tab Image Slideshow", pageKey: "home", bucket: "home-slides", mediaType: "image", accept: "image/*", help: "Upload multiple images for the Home tab hero slideshow." },
+      sermons: { label: "Sermons Tab Video Slideshow", pageKey: "sermons", bucket: "sermon-videos", mediaType: "video", accept: "video/*", help: "Upload sermon page videos for the Sermons tab slideshow." },
+      events: { label: "Events Tab Image Slideshow", pageKey: "events", bucket: "event-slides", mediaType: "image", accept: "image/*", help: "Upload multiple images for the Events tab slideshow." },
+      givingStewardship: { label: "Giving Stewardship Image Slideshow", pageKey: "giving_stewardship", bucket: "stewardship-images", mediaType: "image", accept: "image/*", help: "Upload professional stewardship images for the Give page slideshow." }
+    };
+
+    async function renderAdminSlidesEditor() {
+      app.innerHTML = adminShell("slides", "Page Slides", "Edit the Home, Sermons, and Events slideshow media shown on the public website.", `
+        <div class="admin-card">
+          ${Object.entries(SLIDE_GROUPS).map(([key, group]) => `
+            <div class="slide-admin-group">
+              <h2 style="margin-top:0">${escapeHtml(group.label)}</h2>
+              <p class="admin-muted">${escapeHtml(group.help)}</p>
+              <form class="admin-form-grid page-slide-upload-form" data-slide-group="${key}">
+                <div>
+                  <label class="label">Slide Title, optional</label>
+                  <input class="input" name="title" placeholder="Main slide title">
+                </div>
+                <div>
+                  <label class="label">Display Order Start</label>
+                  <input class="input" name="display_order" type="number" value="10">
+                </div>
+                <div class="full">
+                  <label class="label">Subtitle, optional</label>
+                  <textarea class="textarea" name="subtitle" placeholder="Short text shown over the slide"></textarea>
+                </div>
+                <div>
+                  <label class="label">Optional Link URL</label>
+                  <input class="input" name="link_url" placeholder="https://example.com or #/events">
+                </div>
+                <div>
+                  <label class="label">Upload Files</label>
+                  <input class="input" name="files" type="file" accept="${escapeHtml(group.accept)}" multiple required>
+                </div>
+                <div class="full admin-form-actions">
+                  <button class="btn btn-primary" type="submit">Upload to ${escapeHtml(group.label)}</button>
+                  <a class="btn btn-light" href="#/${key === "home" ? "" : key}">Preview ${escapeHtml(key === "home" ? "Home" : group.label.split(" ")[0])}</a>
+                </div>
+                <div class="full page-slide-upload-status"></div>
+              </form>
+              <div id="slides_${key}" style="margin-top:20px">${state("Loading slides...")}</div>
+            </div>
+          `).join("")}
+        </div>
+      `);
+      bindAdminShell();
+      bindPageSlideUploadForms();
+      await loadAdminSlides();
+    }
+
+    function bindPageSlideUploadForms() {
+      document.querySelectorAll(".page-slide-upload-form").forEach((form) => {
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const key = form.dataset.slideGroup;
+          const group = SLIDE_GROUPS[key];
+          const files = Array.from(form.elements.files.files || []);
+          const status = form.querySelector(".page-slide-upload-status");
+          const button = form.querySelector("button[type='submit']");
+          if (!group || !files.length) return;
+          status.innerHTML = "";
+          button.disabled = true;
+          button.textContent = "Uploading...";
+
+          try {
+            const startOrder = Number(form.elements.display_order.value || 10);
+            const titleBase = form.elements.title.value.trim();
+            const subtitle = form.elements.subtitle.value.trim() || null;
+            const linkUrl = form.elements.link_url.value.trim() || null;
+            const payloads = [];
+
+            for (let i = 0; i < files.length; i++) {
+              const publicUrl = await uploadAdminFile(group.bucket, files[i]);
+              payloads.push({
+                page_key: group.pageKey,
+                media_type: group.mediaType,
+                media_url: publicUrl,
+                title: titleBase || files[i].name.replace(/\.[^.]+$/, ""),
+                subtitle,
+                link_url: linkUrl,
+                display_order: startOrder + i,
+                is_active: true
+              });
+            }
+
+            await supabaseRequest("page_slides", "", {
+              method: "POST",
+              auth: true,
+              prefer: "return=minimal",
+              body: payloads
+            });
+            status.innerHTML = `<div class="message success">${files.length} slide file${files.length === 1 ? "" : "s"} uploaded successfully.</div>`;
+            form.reset();
+            form.elements.display_order.value = String(startOrder + files.length);
+            await loadAdminSlides(key);
+          } catch (error) {
+            status.innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+          } finally {
+            button.disabled = false;
+            button.textContent = `Upload to ${group.label}`;
+          }
+        });
+      });
+    }
+
+    async function loadAdminSlides(onlyKey = null) {
+      const entries = Object.entries(SLIDE_GROUPS).filter(([key]) => !onlyKey || key === onlyKey);
+      for (const [key, group] of entries) {
+        const target = document.getElementById(`slides_${key}`);
+        if (!target) continue;
+        try {
+          const rows = await supabaseRequest(
+            "page_slides",
+            `?select=*&page_key=eq.${encodeURIComponent(group.pageKey)}&order=display_order.asc,created_at.desc`,
+            { auth: true }
+          );
+          target.innerHTML = rows && rows.length ? `
+            <div class="grid grid-3">
+              ${rows.map(slideAdminCard).join("")}
+            </div>
+          ` : state("No slideshow media yet.");
+          bindSlideAdminActions(target);
+        } catch (error) {
+          target.innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+        }
+      }
+    }
+
+    function slideAdminCard(slide) {
+      const preview = slide.media_type === "video"
+        ? `<video src="${escapeHtml(slide.media_url)}" controls muted playsinline></video>`
+        : `<img src="${escapeHtml(slide.media_url)}" alt="${escapeHtml(slide.title || "Slide")}">`;
+      return `
+        <form class="slide-admin-card page-slide-edit-form" data-id="${escapeHtml(slide.id)}" data-page-key="${escapeHtml(slide.page_key)}">
+          <div class="slide-admin-preview">${preview}</div>
+          <div class="slide-admin-meta">
+            <div>
+              <label class="label">Title</label>
+              <input class="input" name="title" value="${escapeHtml(slide.title || "")}">
+            </div>
+            <div>
+              <label class="label">Subtitle</label>
+              <textarea class="textarea" name="subtitle" style="min-height:90px">${escapeHtml(slide.subtitle || "")}</textarea>
+            </div>
+            <div>
+              <label class="label">Link URL</label>
+              <input class="input" name="link_url" value="${escapeHtml(slide.link_url || "")}">
+            </div>
+            <div>
+              <label class="label">Display Order</label>
+              <input class="input" name="display_order" type="number" value="${escapeHtml(slide.display_order ?? 10)}">
+            </div>
+            <label style="display:flex;gap:10px;align-items:center;font-weight:850;color:#334155">
+              <input name="is_active" type="checkbox" ${slide.is_active ? "checked" : ""}> Active on public website
+            </label>
+            <div class="admin-form-actions">
+              <button class="btn btn-primary btn-small" type="submit">Save</button>
+              <button class="btn btn-light btn-small page-slide-delete" type="button" data-id="${escapeHtml(slide.id)}">Delete</button>
+            </div>
+            <div class="page-slide-edit-status"></div>
+          </div>
+        </form>
+      `;
+    }
+
+    function bindSlideAdminActions(scope) {
+      scope.querySelectorAll(".page-slide-edit-form").forEach((form) => {
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const status = form.querySelector(".page-slide-edit-status");
+          const button = form.querySelector("button[type='submit']");
+          status.innerHTML = "";
+          button.disabled = true;
+          button.textContent = "Saving...";
+          try {
+            await supabaseRequest(`page_slides`, `?id=eq.${encodeURIComponent(form.dataset.id)}`, {
+              method: "PATCH",
+              auth: true,
+              prefer: "return=minimal",
+              body: {
+                title: form.elements.title.value.trim() || null,
+                subtitle: form.elements.subtitle.value.trim() || null,
+                link_url: form.elements.link_url.value.trim() || null,
+                display_order: Number(form.elements.display_order.value || 10),
+                is_active: Boolean(form.elements.is_active.checked),
+                updated_at: new Date().toISOString()
+              }
+            });
+            status.innerHTML = `<div class="message success">Saved.</div>`;
+          } catch (error) {
+            status.innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+          } finally {
+            button.disabled = false;
+            button.textContent = "Save";
+          }
+        });
+      });
+
+      scope.querySelectorAll(".page-slide-delete").forEach((button) => {
+        button.addEventListener("click", async () => {
+          const id = button.dataset.id;
+          if (!confirm("Delete this slide from the slideshow?")) return;
+          button.disabled = true;
+          button.textContent = "Deleting...";
+          try {
+            await supabaseRequest("page_slides", `?id=eq.${encodeURIComponent(id)}`, {
+              method: "DELETE",
+              auth: true
+            });
+            button.closest(".page-slide-edit-form").remove();
+          } catch (error) {
+            alert(error.message);
+            button.disabled = false;
+            button.textContent = "Delete";
+          }
+        });
+      });
+    }
+
+    async function renderAdminGivingSettings() {
+      app.innerHTML = adminShell("giving", "Giving Settings", "Edit online giving, Mobile Money, bank transfer, and stewardship content shown on the Give page.", `
+        <div class="admin-card">
+          <form id="givingSettingsForm" class="admin-form-grid">
+            ${adminGivingField("give_title", "Give Page Title", church.giveTitle, true, true)}
+            ${adminGivingTextarea("give_subtitle", "Give Page Subtitle", church.giveSubtitle, true)}
+            ${adminGivingField("give_intro_title", "Giving Section Title", church.giveIntroTitle)}
+            ${adminGivingTextarea("give_intro_text", "Giving Section Description", church.giveIntroText, true)}
+
+            <div class="full"><h2>Online Giving</h2></div>
+            ${adminGivingField("giving_url", "Online Giving Link", church.givingUrl, false, true)}
+            ${adminGivingField("online_giving_title", "Online Giving Title", church.onlineGivingTitle)}
+            ${adminGivingTextarea("online_giving_description", "Online Giving Description", church.onlineGivingDescription, true)}
+
+            <div class="full"><h2>Mobile Money Giving</h2></div>
+            <div class="full">
+              <label style="display:flex;gap:10px;align-items:center;padding:13px;border:1px solid var(--line);border-radius:18px;background:#f8fafc">
+                <input type="checkbox" name="momo_enabled" ${church.momoEnabled ? "checked" : ""}> Show Mobile Money on Give page
+              </label>
+            </div>
+            ${adminGivingField("momo_title", "MoMo Section Title", church.momoTitle)}
+            ${adminGivingField("momo_network", "MoMo Network", church.momoNetwork)}
+            ${adminGivingField("momo_name", "MoMo Account Name", church.momoName)}
+            ${adminGivingField("momo_number", "MoMo Number", church.momoNumber)}
+            ${adminGivingTextarea("momo_reference", "MoMo Reference", church.momoReference, true)}
+            ${adminGivingTextarea("momo_instructions", "MoMo Instructions", church.momoInstructions, true)}
+
+            <div class="full"><h2>Bank Transfer</h2></div>
+            ${adminGivingField("bank_transfer_title", "Bank Transfer Title", church.bankTransferTitle)}
+            ${adminGivingField("bank_name", "Bank Name", church.bankName)}
+            ${adminGivingField("bank_account_name", "Account Name", church.bankAccountName)}
+            ${adminGivingField("bank_account_number", "Account Number", church.bankAccountNumber)}
+            ${adminGivingTextarea("bank_reference", "Bank Reference", church.bankReference, true)}
+
+            <div class="full"><h2>In-Person Giving and Stewardship</h2></div>
+            ${adminGivingField("in_person_title", "In-Person Giving Title", church.inPersonTitle)}
+            ${adminGivingTextarea("in_person_text", "In-Person Giving Text", church.inPersonText, true)}
+            ${adminGivingField("stewardship_title", "Stewardship Panel Title", church.stewardshipTitle, false, true)}
+            ${adminGivingTextarea("stewardship_text", "Stewardship Panel Text", church.stewardshipText, true)}
+            <div class="full">
+              <label style="display:flex;gap:10px;align-items:center;padding:13px;border:1px solid var(--line);border-radius:18px;background:#f8fafc">
+                <input type="checkbox" name="stewardship_verses_enabled" ${church.stewardshipVersesEnabled ? "checked" : ""}> Show auto-changing biblical giving verses on the public Give page
+              </label>
+            </div>
+
+            <div class="full admin-form-actions">
+              <button class="btn btn-primary" type="submit">Save Giving Settings</button>
+              <a class="btn btn-light" href="#/give">Preview Give Page</a>
+            </div>
+            <div class="full" id="givingSettingsStatus"></div>
+          </form>
+        </div>
+      `);
+      bindAdminShell();
+
+      try {
+        const rows = await supabaseRequest("site_settings", "?select=*&id=eq.main&limit=1", { auth: true });
+        if (rows && rows[0]) {
+          applyChurchSettings(rows[0]);
+          fillGivingSettingsForm(rows[0]);
+        }
+      } catch (error) {
+        document.getElementById("givingSettingsStatus").innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+      }
+
+      const form = document.getElementById("givingSettingsForm");
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await saveGivingSettings(form);
+      });
+    }
+
+    function adminGivingField(name, label, value = "", required = false, full = false) {
+      return `
+        <div class="${full ? "full" : ""}">
+          <label class="label" for="giving_${name}">${escapeHtml(label)}</label>
+          <input class="input" id="giving_${name}" name="${name}" value="${escapeHtml(value || "")}" ${required ? "required" : ""}>
+        </div>
+      `;
+    }
+
+    function adminGivingTextarea(name, label, value = "", full = false) {
+      return `
+        <div class="${full ? "full" : ""}">
+          <label class="label" for="giving_${name}">${escapeHtml(label)}</label>
+          <textarea class="textarea" id="giving_${name}" name="${name}">${escapeHtml(value || "")}</textarea>
+        </div>
+      `;
+    }
+
+    function fillGivingSettingsForm(settings) {
+      const form = document.getElementById("givingSettingsForm");
+      if (!form || !settings) return;
+      [
+        "give_title", "give_subtitle", "give_intro_title", "give_intro_text", "giving_url",
+        "online_giving_title", "online_giving_description", "momo_title", "momo_network",
+        "momo_name", "momo_number", "momo_reference", "momo_instructions", "bank_transfer_title",
+        "bank_name", "bank_account_name", "bank_account_number", "bank_reference",
+        "in_person_title", "in_person_text", "stewardship_title", "stewardship_text"
+      ].forEach((name) => {
+        if (form.elements[name]) form.elements[name].value = settings[name] || "";
+      });
+      if (form.elements.momo_enabled) form.elements.momo_enabled.checked = settings.momo_enabled !== false;
+      if (form.elements.stewardship_verses_enabled) form.elements.stewardship_verses_enabled.checked = settings.stewardship_verses_enabled !== false;
+    }
+
+    async function saveGivingSettings(form) {
+      const status = document.getElementById("givingSettingsStatus");
+      const button = form.querySelector("button[type='submit']");
+      status.innerHTML = "";
+      button.disabled = true;
+      button.textContent = "Saving...";
+
+      const payload = {
+        id: "main",
+        give_title: form.give_title.value.trim() || "Partner with the mission through faithful generosity.",
+        give_subtitle: form.give_subtitle.value.trim() || null,
+        give_intro_title: form.give_intro_title.value.trim() || null,
+        give_intro_text: form.give_intro_text.value.trim() || null,
+        giving_url: form.giving_url.value.trim() || null,
+        online_giving_title: form.online_giving_title.value.trim() || null,
+        online_giving_description: form.online_giving_description.value.trim() || null,
+        momo_enabled: Boolean(form.momo_enabled.checked),
+        momo_title: form.momo_title.value.trim() || null,
+        momo_network: form.momo_network.value.trim() || null,
+        momo_name: form.momo_name.value.trim() || null,
+        momo_number: form.momo_number.value.trim() || null,
+        momo_reference: form.momo_reference.value.trim() || null,
+        momo_instructions: form.momo_instructions.value.trim() || null,
+        bank_transfer_title: form.bank_transfer_title.value.trim() || null,
+        bank_name: form.bank_name.value.trim() || null,
+        bank_account_name: form.bank_account_name.value.trim() || null,
+        bank_account_number: form.bank_account_number.value.trim() || null,
+        bank_reference: form.bank_reference.value.trim() || null,
+        in_person_title: form.in_person_title.value.trim() || null,
+        in_person_text: form.in_person_text.value.trim() || null,
+        stewardship_title: form.stewardship_title.value.trim() || null,
+        stewardship_text: form.stewardship_text.value.trim() || null,
+        stewardship_verses_enabled: Boolean(form.stewardship_verses_enabled.checked),
+        updated_at: new Date().toISOString()
+      };
+
+      try {
+        let savedWithPatch = false;
+        try {
+          await supabaseRequest("site_settings", "?id=eq.main", {
+            method: "PATCH",
+            auth: true,
+            prefer: "return=minimal",
+            body: payload
+          });
+          savedWithPatch = true;
+        } catch (patchError) {
+          savedWithPatch = false;
+        }
+
+        if (!savedWithPatch) {
+          await supabaseRequest("site_settings", "", {
+            method: "POST",
+            auth: true,
+            prefer: "resolution=merge-duplicates,return=minimal",
+            body: payload
+          });
+        }
+
+        applyChurchSettings(payload);
+        siteSettingsLoaded = true;
+        status.innerHTML = `<div class="message success">Giving settings saved successfully.</div>`;
+      } catch (error) {
+        status.innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+      } finally {
+        button.disabled = false;
+        button.textContent = "Save Giving Settings";
+      }
+    }
+
+    function renderAdminMediaUploads() {
+      const buckets = [
+        { key: "site-assets", label: "Site Assets and Logos", accept: "image/*" },
+        { key: "home-slides", label: "Home Slideshow Images", accept: "image/*" },
+        { key: "sermon-videos", label: "Sermon Slideshow Videos", accept: "video/*" },
+        { key: "event-slides", label: "Event Slideshow Images", accept: "image/*" },
+        { key: "stewardship-images", label: "Stewardship Slideshow Images", accept: "image/*" },
+        { key: "sermon-thumbnails", label: "Sermon Thumbnails", accept: "image/*" },
+        { key: "sermon-audio", label: "Sermon Audio", accept: "audio/*" },
+        { key: "sermon-notes", label: "Sermon Notes", accept: "application/pdf" },
+        { key: "team-photos", label: "Team Photos", accept: "image/*" },
+        { key: "event-images", label: "Event Images", accept: "image/*" },
+        { key: "ministry-images", label: "Ministry Images", accept: "image/*" }
+      ];
+
+      app.innerHTML = adminShell("media", "Media Uploads", "Upload files to Supabase Storage and copy their public URLs for use in website records.", `
+        <div class="admin-card">
+          <div class="grid grid-3">
+            ${buckets.map((bucket) => `
+              <form class="feature-box admin-media-form" data-bucket="${bucket.key}">
+                <h3 style="margin-top:0">${bucket.label}</h3>
+                <p class="admin-muted">Storage bucket: ${bucket.key}</p>
+                <input class="input" type="file" name="file" accept="${bucket.accept}" required>
+                <div class="admin-form-actions">
+                  <button class="btn btn-primary btn-small" type="submit">Upload</button>
+                </div>
+                <div class="admin-media-status"></div>
+              </form>
+            `).join("")}
+          </div>
+        </div>
+      `);
+      bindAdminShell();
+      bindMediaUploadForms();
+    }
+
+    function bindMediaUploadForms() {
+      document.querySelectorAll(".admin-media-form").forEach((form) => {
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const bucket = form.dataset.bucket;
+          const file = form.file.files && form.file.files[0];
+          const status = form.querySelector(".admin-media-status");
+          const button = form.querySelector("button");
+          status.innerHTML = "";
+          button.disabled = true;
+          button.textContent = "Uploading...";
+
+          try {
+            const publicUrl = await uploadAdminFile(bucket, file);
+            status.innerHTML = `
+              <div class="message success">Upload successful.</div>
+              <label class="label" style="margin-top:12px">Public URL</label>
+              <input class="input" value="${escapeHtml(publicUrl)}" readonly onclick="this.select()">
+              <button class="btn btn-light btn-small" type="button" data-copy-url="${escapeHtml(publicUrl)}" style="margin-top:10px">Copy URL</button>
+            `;
+            const copyBtn = status.querySelector("[data-copy-url]");
+            copyBtn.addEventListener("click", async () => {
+              try {
+                await navigator.clipboard.writeText(publicUrl);
+                copyBtn.textContent = "Copied";
+              } catch (error) {
+                const input = status.querySelector("input");
+                input.select();
+                document.execCommand("copy");
+                copyBtn.textContent = "Copied";
+              }
+            });
+            form.reset();
+          } catch (error) {
+            status.innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+          } finally {
+            button.disabled = false;
+            button.textContent = "Upload";
+          }
+        });
+      });
+    }
+
+    async function renderAdminResource(key) {
+      const cfg = ADMIN_RESOURCES[key];
+      app.innerHTML = adminShell(key, `Manage ${cfg.label}`, `${cfg.label} management`, `
+        <div class="admin-card" style="margin-bottom:22px">
+          <div class="admin-actions" style="justify-content:space-between;align-items:center">
+            <div>
+              <h2 style="margin:0">${cfg.label}</h2>
+              <p class="admin-muted">Manage this website section.</p>
+            </div>
+            <button class="btn btn-primary" type="button" id="adminNewBtn">Add New</button>
+          </div>
+        </div>
+        <div id="adminFormArea"></div>
+        <div id="adminListArea">${state("Loading records...")}</div>
+      `);
+      bindAdminShell();
+      document.getElementById("adminNewBtn").addEventListener("click", () => renderAdminForm(key));
+      await loadAdminResourceRows(key);
+    }
+
+    async function loadAdminResourceRows(key) {
+      const cfg = ADMIN_RESOURCES[key];
+      const area = document.getElementById("adminListArea");
+      try {
+        adminRowsCache = await supabaseRequest(cfg.table, `?select=*&${cfg.order}`, { auth: true }) || [];
+        area.innerHTML = adminResourceTableHtml(key, adminRowsCache);
+        bindAdminResourceActions(key);
+      } catch (error) {
+        area.innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+      }
+    }
+
+    function adminResourceTableHtml(key, rows) {
+      const cfg = ADMIN_RESOURCES[key];
+      if (!rows.length) return state(`No ${cfg.label.toLowerCase()} records yet.`);
+      return `
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                ${cfg.columns.map((c) => `<th>${escapeHtml(c.replaceAll("_", " "))}</th>`).join("")}
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows.map((row, index) => `
+                <tr>
+                  ${cfg.columns.map((c) => `<td>${adminDisplayValue(c, row[c])}</td>`).join("")}
+                  <td>
+                    <div class="admin-actions">
+                      <button class="btn btn-light btn-small" type="button" data-edit="${index}">Edit</button>
+                      <button class="btn btn-danger btn-small" type="button" data-delete="${escapeHtml(row.id)}">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function adminDisplayValue(column, value) {
+      if (value === null || value === undefined || value === "") return "";
+      if (column.includes("datetime") || column.includes("created_at") || column.includes("subscribed_at")) return formatDateTime(value);
+      if (column === "date") return formatDate(value);
+      if (typeof value === "boolean") return value ? "Yes" : "No";
+      return escapeHtml(truncate(value, 90));
+    }
+
+    function bindAdminResourceActions(key) {
+      document.querySelectorAll("[data-edit]").forEach((btn) => {
+        btn.addEventListener("click", () => renderAdminForm(key, adminRowsCache[Number(btn.dataset.edit)]));
+      });
+      document.querySelectorAll("[data-delete]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          if (!confirm("Delete this record? This cannot be undone.")) return;
+          const cfg = ADMIN_RESOURCES[key];
+          btn.disabled = true;
+          try {
+            await supabaseRequest(cfg.table, `?id=eq.${encodeURIComponent(btn.dataset.delete)}`, {
+              method: "DELETE",
+              auth: true
+            });
+            await loadAdminResourceRows(key);
+          } catch (error) {
+            alert(error.message);
+          } finally {
+            btn.disabled = false;
+          }
+        });
+      });
+    }
+
+    function renderAdminForm(key, row = null) {
+      const cfg = ADMIN_RESOURCES[key];
+      const area = document.getElementById("adminFormArea");
+      area.innerHTML = `
+        <form class="admin-card" id="adminEditForm" style="margin-bottom:22px">
+          <h2 style="margin-top:0">${row ? "Edit" : "Add"} ${cfg.label.slice(0, -1) || cfg.label}</h2>
+          <div class="admin-form-grid">
+            ${cfg.fields.map((field) => adminFieldHtml(field, row ? row[field.name] : "")).join("")}
+          </div>
+          <div class="admin-form-actions">
+            <button class="btn btn-primary" type="submit">Save</button>
+            <button class="btn btn-light" type="button" id="adminCancelForm">Cancel</button>
+          </div>
+          <div id="adminFormStatus"></div>
+        </form>
+      `;
+
+      document.getElementById("adminCancelForm").addEventListener("click", () => area.innerHTML = "");
+      const form = document.getElementById("adminEditForm");
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        await saveAdminResourceForm(key, row, form);
+      });
+    }
+
+    function adminFieldHtml(field, value) {
+      const full = field.full || field.type === "textarea" || field.upload ? " full" : "";
+      const required = field.required ? " required" : "";
+      const label = `<label class="label" for="admin_${field.name}">${escapeHtml(field.label)}</label>`;
+      const safeValue = field.type === "datetime-local" ? toLocalDateTimeValue(value) : escapeHtml(value ?? "");
+      if (field.type === "textarea") {
+        return `<div class="${full}">${label}<textarea class="textarea" id="admin_${field.name}" name="${field.name}"${required}>${escapeHtml(value ?? "")}</textarea></div>`;
+      }
+      if (field.type === "checkbox") {
+        return `<div class="${full}"><label style="display:flex;gap:10px;align-items:center;padding:13px;border:1px solid var(--line);border-radius:18px;background:#f8fafc"><input type="checkbox" name="${field.name}" ${value ? "checked" : ""}> ${escapeHtml(field.label)}</label></div>`;
+      }
+      if (field.upload) {
+        return `
+          <div class="${full} admin-upload-row">
+            ${label}
+            <input class="input" id="admin_${field.name}" name="${field.name}" value="${safeValue}" placeholder="Public URL or upload a file below">
+            <input type="file" name="${field.name}_file" accept="${escapeHtml(field.upload.accept || "*")}" data-upload-field="${field.name}" data-upload-bucket="${field.upload.bucket}">
+            <span class="admin-muted">Upload saves to the ${escapeHtml(field.upload.bucket)} storage bucket and fills this URL automatically.</span>
+          </div>
+        `;
+      }
+      return `<div class="${full}">${label}<input class="input" id="admin_${field.name}" name="${field.name}" type="${escapeHtml(field.type || "text")}" value="${safeValue}"${required}></div>`;
+    }
+
+    function toLocalDateTimeValue(value) {
+      if (!value) return "";
+      const d = new Date(value);
+      if (Number.isNaN(d.getTime())) return "";
+      const pad = (n) => String(n).padStart(2, "0");
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    async function saveAdminResourceForm(key, row, form) {
+      const cfg = ADMIN_RESOURCES[key];
+      const status = document.getElementById("adminFormStatus");
+      const saveBtn = form.querySelector("button[type='submit']");
+      status.innerHTML = "";
+      saveBtn.disabled = true;
+      saveBtn.textContent = "Saving...";
+
+      try {
+        for (const fileInput of form.querySelectorAll("[data-upload-field]")) {
+          if (fileInput.files && fileInput.files[0]) {
+            const publicUrl = await uploadAdminFile(fileInput.dataset.uploadBucket, fileInput.files[0]);
+            form.elements[fileInput.dataset.uploadField].value = publicUrl;
+          }
+        }
+
+        const payload = {};
+        for (const field of cfg.fields) {
+          const input = form.elements[field.name];
+          if (!input) continue;
+          if (field.type === "checkbox") payload[field.name] = Boolean(input.checked);
+          else if (field.type === "number") payload[field.name] = input.value === "" ? null : Number(input.value);
+          else if (field.type === "datetime-local") payload[field.name] = input.value ? new Date(input.value).toISOString() : null;
+          else payload[field.name] = input.value.trim() === "" ? null : input.value.trim();
+        }
+
+        if (row && row.id) {
+          await supabaseRequest(cfg.table, `?id=eq.${encodeURIComponent(row.id)}`, {
+            method: "PATCH",
+            auth: true,
+            prefer: "return=minimal",
+            body: payload
+          });
+        } else {
+          await supabaseRequest(cfg.table, "", {
+            method: "POST",
+            auth: true,
+            prefer: "return=minimal",
+            body: payload
+          });
+        }
+
+        status.innerHTML = `<div class="message success">Saved successfully.</div>`;
+        await loadAdminResourceRows(key);
+        setTimeout(() => { const area = document.getElementById("adminFormArea"); if (area) area.innerHTML = ""; }, 800);
+      } catch (error) {
+        status.innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.textContent = "Save";
+      }
+    }
+
+    async function renderAdminInbox(key) {
+      const cfg = ADMIN_INBOX[key];
+      app.innerHTML = adminShell(key, cfg.label, "Website submissions", `
+        <div class="admin-card">
+          <div id="adminInboxArea">${state("Loading records...")}</div>
+        </div>
+      `);
+      bindAdminShell();
+
+      try {
+        const rows = await supabaseRequest(cfg.table, `?select=*&${cfg.order}`, { auth: true }) || [];
+        adminRowsCache = rows;
+        document.getElementById("adminInboxArea").innerHTML = adminInboxTableHtml(key, rows);
+        bindAdminInboxActions(key);
+      } catch (error) {
+        document.getElementById("adminInboxArea").innerHTML = `<div class="message error">${escapeHtml(error.message)}</div>`;
+      }
+    }
+
+    function adminInboxTableHtml(key, rows) {
+      const cfg = ADMIN_INBOX[key];
+      if (!rows.length) return state("No records yet.");
+      return `
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                ${cfg.columns.map((c) => `<th>${escapeHtml(c.replaceAll("_", " "))}</th>`).join("")}
+                ${cfg.bodyField ? `<th>${escapeHtml(cfg.bodyField.replaceAll("_", " "))}</th>` : ""}
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows.map((row) => `
+                <tr>
+                  ${cfg.columns.map((c) => `<td>${adminDisplayValue(c, row[c])}</td>`).join("")}
+                  ${cfg.bodyField ? `<td>${escapeHtml(truncate(row[cfg.bodyField], 180))}</td>` : ""}
+                  <td>
+                    <div class="admin-actions">
+                      ${cfg.editablePublic ? `<button class="btn btn-light btn-small" type="button" data-toggle-public="${escapeHtml(row.id)}">${row.is_public ? "Make Private" : "Make Public"}</button>` : ""}
+                      <button class="btn btn-danger btn-small" type="button" data-inbox-delete="${escapeHtml(row.id)}">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function bindAdminInboxActions(key) {
+      const cfg = ADMIN_INBOX[key];
+      document.querySelectorAll("[data-inbox-delete]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          if (!confirm("Delete this item?")) return;
+          try {
+            await supabaseRequest(cfg.table, `?id=eq.${encodeURIComponent(btn.dataset.inboxDelete)}`, { method: "DELETE", auth: true });
+            renderAdminInbox(key);
+          } catch (error) {
+            alert(error.message);
+          }
+        });
+      });
+
+      document.querySelectorAll("[data-toggle-public]").forEach((btn) => {
+        btn.addEventListener("click", async () => {
+          const row = adminRowsCache.find((item) => item.id === btn.dataset.togglePublic);
+          if (!row) return;
+          try {
+            await supabaseRequest(cfg.table, `?id=eq.${encodeURIComponent(row.id)}`, {
+              method: "PATCH",
+              auth: true,
+              prefer: "return=minimal",
+              body: { is_public: !row.is_public }
+            });
+            renderAdminInbox(key);
+          } catch (error) {
+            alert(error.message);
+          }
+        });
+      });
+    }
+
+    function renderAdminSetup() {
+      return renderAdminDashboard();
+    }
+
+    function render404() {
+      app.innerHTML = `
+        <section class="detail">
+          <div class="container" style="max-width:760px;text-align:center">
+            <span class="eyebrow" style="background:#eef6ff;color:#1554a6;border:0">404</span>
+            <h1>Page not found</h1>
+            <p style="color:#64748b;line-height:1.7">The page you requested does not exist or may have been moved.</p>
+            <a class="btn btn-primary" href="#/">Return Home</a>
+          </div>
+        </section>
+      `;
+    }
+
+    async function router() {
+      const raw = location.hash.replace(/^#/, "") || "/";
+      const parts = raw.split("/").filter(Boolean);
+      const first = parts[0] || "";
+      const second = parts[1] || "";
+
+      window.scrollTo({ top: 0, behavior: "instant" in window ? "instant" : "auto" });
+      closeMobileMenu();
+      updateActiveLinks(raw);
+      await loadSiteSettingsOnce();
+
+      if (raw === "/" || raw === "") return renderHome();
+      if (first === "about") return renderAbout();
+      if (first === "sermons") return renderSermons(second);
+      if (first === "events") return renderEvents(second);
+      if (first === "ministries") return renderMinistries();
+      if (first === "give") return renderGive();
+      if (first === "contact") return renderContact();
+      if (first === "prayer") return renderPrayer();
+      if (first === "admin") return renderAdmin(second || "dashboard");
+      return render404();
+    }
+
+    function updateActiveLinks(path) {
+      const normalized = path === "" ? "/" : path;
+      document.querySelectorAll(".nav a, .mobile-menu a").forEach((a) => {
+        const href = a.getAttribute("href").replace(/^#/, "");
+        const exact = href === normalized;
+        const section = href !== "/" && normalized.startsWith(href + "/");
+        a.classList.toggle("active", exact || section);
+      });
+    }
+
+    function closeMobileMenu() {
+      document.getElementById("mobileMenu").classList.remove("open");
+    }
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    window.addEventListener("scroll", () => {
+      document.getElementById("siteHeader").classList.toggle("scrolled", window.scrollY > 50);
+    });
+
+    document.getElementById("mobileBtn").addEventListener("click", () => {
+      document.getElementById("mobileMenu").classList.toggle("open");
+    });
+
+    window.addEventListener("hashchange", router);
+    window.addEventListener("DOMContentLoaded", router);
+  </script>
+</body>
+</html>
