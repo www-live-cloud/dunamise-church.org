@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>Grace Community Church</title>
-  <!-- Build: Android-safe admin Phase 1 to 15 full upgrade edition -->
+  <link id="dynamicFavicon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231554a6'/%3E%3Cpath d='M32 9v46M18 24h28M14 55h36' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <link id="dynamicAppleIcon" rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231554a6'/%3E%3Cpath d='M32 9v46M18 24h28M14 55h36' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E" />
+  <!-- Build: Android-safe admin favicon and professional navigation drawer edition -->
   <!-- Build: Android-safe admin top slideshow edition -->
 
   <style>
@@ -183,6 +185,114 @@
       background: var(--gold);
       color: var(--ink);
     }
+
+
+    /* Professional public navigation drawer for extra page tabs */
+    .nav {
+      flex: 1;
+      min-width: 0;
+      justify-content: center;
+      overflow: visible;
+      position: relative;
+    }
+
+    .nav-more {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .more-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border: 0;
+      border-radius: 999px;
+      background: transparent;
+      color: var(--header-text, #334155);
+      padding: 10px 13px;
+      font-size: 14px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .more-toggle::after {
+      content: "⌄";
+      font-size: 15px;
+      line-height: 1;
+      transform: translateY(-1px);
+    }
+
+    .more-toggle:hover,
+    .more-toggle.active,
+    .nav-more.open .more-toggle {
+      background: var(--header-active-bg, var(--primary-50));
+      color: var(--header-active-text, var(--primary-700));
+    }
+
+    .more-panel {
+      position: absolute;
+      right: 0;
+      top: calc(100% + 14px);
+      z-index: 1200;
+      min-width: 250px;
+      display: none;
+      gap: 6px;
+      padding: 12px;
+      border: 1px solid rgba(226, 232, 240, 0.86);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.96);
+      box-shadow: 0 22px 60px rgba(15, 23, 42, 0.16);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .nav-more.open .more-panel,
+    .nav-more:hover .more-panel {
+      display: grid;
+    }
+
+    .more-panel a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 42px;
+      border-radius: 16px;
+      padding: 11px 13px;
+      color: #334155 !important;
+      white-space: nowrap;
+    }
+
+    .more-panel a:hover,
+    .more-panel a.active {
+      background: var(--primary-50) !important;
+      color: var(--primary-700) !important;
+    }
+
+    .more-panel a::after {
+      content: "›";
+      color: #94a3b8;
+      font-weight: 950;
+    }
+
+    .desktop-cta {
+      flex: 0 0 auto;
+      white-space: nowrap;
+    }
+
+    .header-inner {
+      overflow: visible;
+    }
+
+    @media (max-width: 1180px) {
+      .nav a,
+      .more-toggle {
+        padding-left: 10px;
+        padding-right: 10px;
+        font-size: 13px;
+      }
+    }
+
 
     .mobile-btn {
       display: none;
@@ -1768,6 +1878,7 @@
       stewardshipText: "We handle giving with accountability, transparency, and prayerful stewardship. Your generosity helps us serve families, equip leaders, and reach our community.",
       stewardshipVersesEnabled: true,
       logoUrl: "",
+      faviconUrl: "",
       headerTheme: "blue",
       footerTheme: "midnight"
     };
@@ -1908,6 +2019,7 @@
         stewardshipText: settings.stewardship_text || church.stewardshipText,
         stewardshipVersesEnabled: settings.stewardship_verses_enabled === false ? false : (settings.stewardship_verses_enabled === true ? true : church.stewardshipVersesEnabled),
         logoUrl: settings.logo_url || church.logoUrl || "",
+        faviconUrl: settings.favicon_url || settings.logo_url || church.faviconUrl || church.logoUrl || "",
         headerTheme: settings.header_theme || church.headerTheme || "blue",
         footerTheme: settings.footer_theme || church.footerTheme || "midnight"
       };
@@ -1953,9 +2065,36 @@
       root.style.setProperty("--footer-accent-bg", footer.accentBg);
     }
 
+
+    function defaultFaviconUrl() {
+      return "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%231554a6'/%3E%3Cpath d='M32 9v46M18 24h28M14 55h36' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E";
+    }
+
+    function setBrowserFavicon(url) {
+      const finalUrl = url || defaultFaviconUrl();
+      let icon = document.getElementById("dynamicFavicon");
+      if (!icon) {
+        icon = document.createElement("link");
+        icon.id = "dynamicFavicon";
+        icon.rel = "icon";
+        document.head.appendChild(icon);
+      }
+      icon.href = finalUrl;
+
+      let apple = document.getElementById("dynamicAppleIcon");
+      if (!apple) {
+        apple = document.createElement("link");
+        apple.id = "dynamicAppleIcon";
+        apple.rel = "apple-touch-icon";
+        document.head.appendChild(apple);
+      }
+      apple.href = finalUrl;
+    }
+
     function applyChurchBrandToStaticLayout() {
       const parts = brandParts(church.name);
       document.title = church.name;
+      setBrowserFavicon(church.faviconUrl || church.logoUrl);
       document.querySelectorAll(".brand-small").forEach((el) => { el.textContent = parts.small; });
       document.querySelectorAll(".brand-name").forEach((el) => { el.textContent = parts.rest; });
 
@@ -3231,6 +3370,7 @@
             ${adminSettingsField("church_name", "Church Name", church.name, true)}
             ${adminSettingsField("tagline", "Tagline", church.tagline)}
             ${adminLogoUploadField(church.logoUrl)}
+            ${adminFaviconUploadField(church.faviconUrl || church.logoUrl)}
             ${themeSelectField("header_theme", "Header Theme", THEME_OPTIONS, church.headerTheme || "blue")}
             ${themeSelectField("footer_theme", "Footer Theme", FOOTER_THEME_OPTIONS, church.footerTheme || "midnight")}
             ${adminSettingsField("address", "Address", church.address, true)}
@@ -3305,6 +3445,18 @@
           if (previewBox) previewBox.querySelector("img, .empty-logo-preview").outerHTML = `<img src="${url}" alt="Church logo preview">`;
         });
       }
+
+      const faviconFileInput = form.favicon_file;
+      if (faviconFileInput) {
+        faviconFileInput.addEventListener("change", () => {
+          const file = faviconFileInput.files && faviconFileInput.files[0];
+          if (!file) return;
+          const previewBox = document.getElementById("faviconPreviewBox");
+          const url = URL.createObjectURL(file);
+          if (previewBox) previewBox.querySelector("img, .empty-logo-preview").outerHTML = `<img src="${url}" alt="Browser tab logo preview">`;
+          setBrowserFavicon(url);
+        });
+      }
       form.querySelectorAll("input[name='header_theme'], input[name='footer_theme']").forEach((input) => {
         input.addEventListener("change", () => {
           church.headerTheme = form.header_theme.value;
@@ -3343,6 +3495,23 @@
       `;
     }
 
+
+    function adminFaviconUploadField(value = "") {
+      return `
+        <div class="full">
+          <label class="label" for="settings_favicon_file">Browser Tab Logo, Favicon</label>
+          <div class="logo-preview-box" id="faviconPreviewBox">
+            ${value ? `<img src="${escapeHtml(value)}" alt="Browser tab logo preview">` : `<div class="empty-logo-preview">Tab</div>`}
+            <div style="min-width:0;flex:1">
+              <input class="input" id="settings_favicon_file" name="favicon_file" type="file" accept="image/*">
+              <input type="hidden" name="favicon_url" value="${escapeHtml(value || "")}">
+              <p class="admin-muted">Upload a square icon for the browser tab. A PNG or JPG logo works well. If empty, the website uses the church logo.</p>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
     function themeSelectField(name, label, options, selected) {
       return `
         <div class="full">
@@ -3363,7 +3532,7 @@
     function fillSiteSettingsForm(settings) {
       const form = document.getElementById("siteSettingsForm");
       if (!form || !settings) return;
-      ["church_name", "tagline", "address", "phone", "email", "service_times", "stream_url", "giving_url", "logo_url"].forEach((name) => {
+      ["church_name", "tagline", "address", "phone", "email", "service_times", "stream_url", "giving_url", "logo_url", "favicon_url"].forEach((name) => {
         if (form.elements[name]) form.elements[name].value = settings[name] || "";
       });
       ["header_theme", "footer_theme"].forEach((name) => {
@@ -3377,6 +3546,11 @@
       if (previewBox && settings.logo_url) {
         previewBox.querySelector("img, .empty-logo-preview").outerHTML = `<img src="${escapeHtml(settings.logo_url)}" alt="Church logo preview">`;
       }
+      const faviconPreviewBox = document.getElementById("faviconPreviewBox");
+      const faviconPreviewUrl = settings.favicon_url || settings.logo_url;
+      if (faviconPreviewBox && faviconPreviewUrl) {
+        faviconPreviewBox.querySelector("img, .empty-logo-preview").outerHTML = `<img src="${escapeHtml(faviconPreviewUrl)}" alt="Browser tab logo preview">`;
+      }
     }
 
     async function saveSiteSettings(form) {
@@ -3387,7 +3561,9 @@
       button.textContent = "Saving...";
 
       const logoFile = form.logo_file && form.logo_file.files ? form.logo_file.files[0] : null;
+      const faviconFile = form.favicon_file && form.favicon_file.files ? form.favicon_file.files[0] : null;
       let logoUrl = form.logo_url ? form.logo_url.value.trim() : "";
+      let faviconUrl = form.favicon_url ? form.favicon_url.value.trim() : "";
 
       const payload = {
         id: "main",
@@ -3400,6 +3576,7 @@
         stream_url: form.stream_url.value.trim() || null,
         giving_url: form.giving_url.value.trim() || null,
         logo_url: logoUrl || null,
+        favicon_url: faviconUrl || logoUrl || null,
         header_theme: form.header_theme ? form.header_theme.value : "blue",
         footer_theme: form.footer_theme ? form.footer_theme.value : "midnight",
         updated_at: new Date().toISOString()
@@ -3408,6 +3585,10 @@
       try {
         if (logoFile) {
           payload.logo_url = await uploadAdminFile("site-assets", logoFile);
+          if (!faviconFile && !faviconUrl) payload.favicon_url = payload.logo_url;
+        }
+        if (faviconFile) {
+          payload.favicon_url = await uploadAdminFile("site-assets", faviconFile);
         }
         let savedWithPatch = false;
         try {
@@ -4254,11 +4435,20 @@
         const section = href !== "/" && normalized.startsWith(href + "/");
         a.classList.toggle("active", exact || section);
       });
+      document.querySelectorAll(".nav-more").forEach((more) => {
+        const hasActive = !!more.querySelector("a.active");
+        const toggle = more.querySelector(".more-toggle");
+        if (toggle) toggle.classList.toggle("active", hasActive);
+        more.classList.remove("open");
+        if (toggle) toggle.setAttribute("aria-expanded", "false");
+      });
     }
 
     function closeMobileMenu() {
       document.getElementById("mobileMenu").classList.remove("open");
     }
+
+    setBrowserFavicon(defaultFaviconUrl());
 
     document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -4291,19 +4481,53 @@
   function boolValue(form,name){ return !!(form.elements[name] && form.elements[name].checked); }
 
   function upgradePublicNavigation(){
-    const targets = [document.getElementById('mainNav'), document.getElementById('mobileMenu')].filter(Boolean);
-    targets.forEach(nav => {
-      if(nav.dataset.phaseUpgraded) return;
-      const admin = Array.from(nav.querySelectorAll('a')).find(a => (a.getAttribute('href')||'') === '#/admin');
-      const links = [
-        ['#/blog','Blog'], ['#/gallery','Gallery'], ['#/live','Live'], ['#/downloads','Downloads'], ['#/visit','Visit'], ['#/testimonies','Testimonies']
-      ];
+    const links = [
+      ['#/blog','Blog'], ['#/gallery','Gallery'], ['#/live','Live'], ['#/downloads','Downloads'], ['#/visit','Visit'], ['#/testimonies','Testimonies']
+    ];
+
+    const mainNav = document.getElementById('mainNav');
+    if(mainNav && !mainNav.dataset.phaseUpgraded){
+      const admin = Array.from(mainNav.querySelectorAll('a')).find(a => (a.getAttribute('href')||'') === '#/admin');
+      let more = mainNav.querySelector('.nav-more');
+      if(!more){
+        more = document.createElement('span');
+        more.className = 'nav-more';
+        more.innerHTML = `<button class="more-toggle" type="button" aria-expanded="false">More</button><span class="more-panel"></span>`;
+        if(admin) mainNav.insertBefore(more, admin); else mainNav.appendChild(more);
+      }
+      const panel = more.querySelector('.more-panel');
       links.forEach(([href,label]) => {
-        if(nav.querySelector(`a[href="${href}"]`)) return;
+        if(panel.querySelector(`a[href="${href}"]`)) return;
         const a=document.createElement('a'); a.href=href; a.textContent=label;
-        if(admin) nav.insertBefore(a, admin); else nav.appendChild(a);
+        panel.appendChild(a);
       });
-      nav.dataset.phaseUpgraded='true';
+      const toggle = more.querySelector('.more-toggle');
+      toggle.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const open = more.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      mainNav.dataset.phaseUpgraded='true';
+    }
+
+    const mobileNav = document.getElementById('mobileMenu');
+    if(mobileNav && !mobileNav.dataset.phaseUpgraded){
+      const admin = Array.from(mobileNav.querySelectorAll('a')).find(a => (a.getAttribute('href')||'') === '#/admin');
+      links.forEach(([href,label]) => {
+        if(mobileNav.querySelector(`a[href="${href}"]`)) return;
+        const a=document.createElement('a'); a.href=href; a.textContent=label;
+        if(admin) mobileNav.insertBefore(a, admin); else mobileNav.appendChild(a);
+      });
+      mobileNav.dataset.phaseUpgraded='true';
+    }
+
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.nav-more.open').forEach((more) => {
+        more.classList.remove('open');
+        const toggle = more.querySelector('.more-toggle');
+        if(toggle) toggle.setAttribute('aria-expanded', 'false');
+      });
     });
   }
 
